@@ -4,301 +4,155 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mr. Le Claire's DOS Arcade</title>
+<link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
+<script src="https://v8.js-dos.com/latest/js-dos.js"></script>
 <style>
 :root{
-  --green:#39ff72; --dim:#82ad8d; --dark:#020602; --panel:#071008;
-  --line:#23833c; --yellow:#ffe66d; --white:#e9ffe9; --red:#ff6969;
+  --bg:#070a0d; --panel:#0d1217; --green:#63ff7a; --cyan:#42e8ff;
+  --yellow:#ffe45c; --muted:#8ca095; --border:#285234;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;background:#000;color:var(--green);
-  font-family:"Courier New",Courier,monospace;
-  min-height:100vh;
-}
-body:after{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:99;
-  background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(255,255,255,.035) 4px);
-}
-a{color:inherit}
-.container{width:min(1180px,94%);margin:auto}
-header{
-  margin:18px auto 0;padding:26px 18px 20px;text-align:center;
-  border:3px solid var(--green);background:var(--panel);
-  box-shadow:0 0 28px rgba(57,255,114,.18),inset 0 0 35px rgba(57,255,114,.04);
-}
-.logo{
-  font-size:clamp(25px,5vw,58px);font-weight:bold;letter-spacing:3px;
-  text-shadow:3px 3px 0 #116027;
-}
-.subtitle{color:var(--yellow);font-size:clamp(12px,2vw,18px);margin-top:10px}
-.status{
-  display:flex;justify-content:center;gap:24px;flex-wrap:wrap;
-  margin-top:18px;color:var(--dim);font-size:12px;
-}
-.status span:before{content:"● ";color:var(--green)}
-nav{
-  margin:12px auto 0;border:2px solid var(--line);background:#050905;
-  display:flex;justify-content:center;flex-wrap:wrap;
-}
-nav a{
-  text-decoration:none;padding:12px 18px;border-right:1px solid var(--line);
-  font-weight:bold;font-size:13px;
-}
-nav a:last-child{border-right:0}
-nav a:hover{background:var(--green);color:#001b07}
-.terminal{
-  margin:22px 0;padding:17px;border:2px dashed var(--line);
-  background:#050b05;line-height:1.65;color:var(--white);
-}
-.prompt{color:var(--yellow)}
-.blink{animation:blink 1s steps(2,end) infinite}
-@keyframes blink{50%{opacity:0}}
-.section-title{
-  border-bottom:2px solid var(--green);padding:0 0 8px;margin:30px 0 15px;
-  font-size:21px;
-}
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.filter{
-  width:auto;padding:8px 12px;background:#071007;border:1px solid var(--line);
-  color:var(--green);font:inherit;font-size:12px;
-}
-.filter.active,.filter:hover{background:var(--green);color:#001b07}
-.games{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;
-}
-.card{
-  min-height:255px;padding:16px;background:linear-gradient(145deg,#0a120a,#030603);
-  border:2px solid var(--line);display:flex;flex-direction:column;
-  position:relative;transition:transform .12s,box-shadow .12s,border-color .12s;
-}
-.card:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 0 20px rgba(57,255,114,.18)}
-.card-top{display:flex;justify-content:space-between;gap:10px}
-.slot{font-size:11px;color:var(--dim)}
-.tag{font-size:10px;background:#17361d;color:var(--green);padding:3px 6px}
-.pixel-icon{
-  font-size:48px;line-height:1;margin:18px 0 10px;
-  filter:grayscale(1) contrast(1.2);
-}
-.title{font-size:19px;color:var(--white);font-weight:bold}
-.desc{font-size:12px;color:#aab9ad;line-height:1.45;margin:9px 0 15px;flex:1}
-.play{
-  width:100%;padding:11px;border:2px solid var(--green);background:#0a1d0d;
-  color:var(--green);font:inherit;font-weight:bold;cursor:pointer;
-}
-.play:hover{background:var(--green);color:#001b07}
-.hidden{display:none!important}
-.rules{
-  border:2px solid var(--yellow);padding:18px;background:#0d0d05;color:#eeecc7;
-}
-.rules h3{color:var(--yellow);margin-top:0}
-.rules ol{line-height:1.7}
-footer{text-align:center;color:#506454;font-size:11px;padding:28px 0 35px}
-.modal{
-  display:none;position:fixed;z-index:100;inset:0;background:rgba(0,0,0,.88);
-  align-items:center;justify-content:center;padding:20px;
-}
-.modal.open{display:flex}
-.modal-box{
-  width:min(800px,100%);border:3px solid var(--green);background:#030603;
-  padding:25px;box-shadow:0 0 40px rgba(57,255,114,.25);text-align:center;
-}
-.modal-box h2{color:var(--yellow)}
-.close{margin-top:18px;width:auto;padding:9px 18px}
-@media(max-width:600px){
-  nav a{flex:1 1 45%;border-bottom:1px solid var(--line)}
-}
+body{margin:0;background:radial-gradient(circle at top,#17231b 0,#070a0d 48%,#030405 100%);
+ color:var(--green);font-family:"Courier New",monospace;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;
+ background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,#fff 4px)}
+header{padding:28px 18px 18px;text-align:center;border-bottom:2px solid var(--border)}
+h1{margin:0;font-size:clamp(24px,5vw,48px);letter-spacing:2px;text-shadow:0 0 10px #1aff4b}
+.subtitle{margin-top:8px;color:var(--cyan);font-size:13px}
+.status{margin-top:14px;color:var(--yellow);font-size:12px}
+main{max-width:1100px;margin:auto;padding:22px}
+.panel{background:rgba(13,18,23,.94);border:1px solid var(--border);box-shadow:0 0 20px #000;padding:18px;margin-bottom:20px}
+.terminal{color:#d8e6dc;line-height:1.6}
+.terminal .ok{color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:#090e12;border:1px solid #24462c;padding:16px;min-height:190px;display:flex;flex-direction:column}
+.card:hover{border-color:var(--green);box-shadow:0 0 12px #164c21}
+.icon{font-size:36px}.title{font-size:18px;color:#fff;margin:8px 0}
+.desc{font-size:12px;color:var(--muted);line-height:1.5;flex:1}
+.tag{font-size:10px;color:var(--cyan);margin:8px 0}
+button{font:inherit;cursor:pointer;border:1px solid var(--green);background:#071108;color:var(--green);
+padding:10px 12px;font-weight:bold}
+button:hover{background:#123017;color:#fff}
+#playerWrap{display:none}
+#dos{width:100%;height:min(70vh,620px);background:#000;border:2px solid var(--green)}
+.playerTop{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+#gameTitle{color:#fff;font-size:18px}
+.back{border-color:var(--yellow);color:var(--yellow)}
+.rules{line-height:1.7;color:#d8e6dc;font-size:13px}
+footer{text-align:center;padding:24px;color:#61766a;font-size:11px}
 </style>
 </head>
 <body>
-<div class="container">
-
 <header>
-  <div class="logo">💾 MR. LE CLAIRE'S ARCADE 💾</div>
-  <div class="subtitle">CLASSIC COMPUTER GAME LAB // LE CLAIRE-APPROVED EDITION</div>
-  <div class="status">
-    <span>SYSTEM ONLINE</span><span>12 GAME PORTS</span><span>HUMAN MODE</span>
-  </div>
+  <h1>💾 MR. LE CLAIRE'S DOS ARCADE 💾</h1>
+  <div class="subtitle">CLASSIC COMPUTER GAME LAB // TEACHER-APPROVED EDITION</div>
+  <div class="status">● SYSTEM READY // TEACHER CONTROLLED // BROWSER DOS EMULATOR</div>
 </header>
 
-<nav>
-  <a href="#games">[ GAMES ]</a>
-  <a href="#rules">[ RULES ]</a>
-  <a href="#about">[ ABOUT ]</a>
-</nav>
+<main>
+  <section id="arcade" class="panel">
+    <div class="terminal">
+      <div> C:\CLASSROOM\ARCADE&gt; BOOT</div>
+      <div class="ok"> [OK] DOS EMULATOR ONLINE</div>
+      <div class="ok"> [OK] STUDENT GAME LIBRARY LOADED</div>
+      <div> Select a game below.</div>
+    </div>
+    <br>
+    <div class="grid">
+      <article class="card">
+        <div class="icon">⛏️</div>
+        <div class="title">DIGGER</div>
+        <div class="tag">ARCADE // CLASSIC</div>
+        <div class="desc">A classic 1983 arcade game used here as the first emulator test.</div>
+        <button onclick="playGame('https://v8.js-dos.com/bundles/digger.jsdos','Digger')">▶ PLAY GAME</button>
+      </article>
 
-<div class="terminal">
-  <div><span class="prompt">C:\LECLAIRE\ARCADE&gt;</span> START ARCADE.EXE</div>
-  <div>Loading approved games.................................... <b>OK</b></div>
-  <div>Checking classroom mode.................................. <b>OK</b></div>
-  <div>Welcome, Fellow Human! <span class="blink">_</span></div>
-</div>
+      <article class="card">
+        <div class="icon">🍕</div>
+        <div class="title">NUMBER MUNCHERS</div>
+        <div class="tag">EDUCATIONAL</div>
+        <div class="desc">Teacher slot — add a legally usable game bundle here when ready.</div>
+        <button onclick="comingSoon('Number Munchers')">▶ PLAY GAME</button>
+      </article>
 
-<section id="games">
-  <div class="section-title">🕹️ &gt;&gt; SELECT A GAME</div>
-  <div class="filters">
-    <button class="filter active" onclick="filterGames('all',this)">ALL GAMES</button>
-    <button class="filter" onclick="filterGames('education',this)">EDUCATIONAL</button>
-    <button class="filter" onclick="filterGames('puzzle',this)">PUZZLE</button>
-    <button class="filter" onclick="filterGames('arcade',this)">ARCADE</button>
-    <button class="filter" onclick="filterGames('strategy',this)">STRATEGY</button>
-  </div>
+      <article class="card">
+        <div class="icon">🔤</div>
+        <div class="title">WORD MUNCHERS</div>
+        <div class="tag">EDUCATIONAL</div>
+        <div class="desc">Teacher slot — add a legally usable game bundle here when ready.</div>
+        <button onclick="comingSoon('Word Munchers')">▶ PLAY GAME</button>
+      </article>
 
-  <div class="games" id="gameGrid">
+      <article class="card">
+        <div class="icon">🚀</div>
+        <div class="title">COMMANDER KEEN 4</div>
+        <div class="tag">ADVENTURE // SHAREWARE</div>
+        <div class="desc">Teacher slot — game files should only be added if you have the right to host and distribute them.</div>
+        <button onclick="comingSoon('Commander Keen 4')">▶ PLAY GAME</button>
+      </article>
 
-    <article class="card" data-category="education">
-      <div class="card-top"><span class="slot">GAME 01</span><span class="tag">EDUCATION</span></div>
-      <div class="pixel-icon">🔢</div>
-      <div class="title">NUMBER MUNCHERS</div>
-      <div class="desc">Practice math skills while avoiding the wrong answers. A classic educational favorite.</div>
-      <button class="play" onclick="launch('Number Munchers')">▶ PLAY GAME</button>
-    </article>
+      <article class="card">
+        <div class="icon">🧩</div>
+        <div class="title">TETRIS</div>
+        <div class="tag">PUZZLE</div>
+        <div class="desc">Teacher slot — add a legally usable DOS bundle here when ready.</div>
+        <button onclick="comingSoon('Tetris')">▶ PLAY GAME</button>
+      </article>
 
-    <article class="card" data-category="education">
-      <div class="card-top"><span class="slot">GAME 02</span><span class="tag">EDUCATION</span></div>
-      <div class="pixel-icon">🔤</div>
-      <div class="title">WORD MUNCHERS</div>
-      <div class="desc">A vocabulary and language game for classic-computer fans.</div>
-      <button class="play" onclick="launch('Word Munchers')">▶ PLAY GAME</button>
-    </article>
+      <article class="card">
+        <div class="icon">💾</div>
+        <div class="title">GAME SLOT 06</div>
+        <div class="tag">TEACHER SELECTED</div>
+        <div class="desc">Reserved for another classroom-approved DOS game.</div>
+        <button onclick="comingSoon('Game Slot 06')">▶ PLAY GAME</button>
+      </article>
+    </div>
+  </section>
 
-    <article class="card" data-category="strategy">
-      <div class="card-top"><span class="slot">GAME 03</span><span class="tag">STRATEGY</span></div>
-      <div class="pixel-icon">🐂</div>
-      <div class="title">THE OREGON TRAIL</div>
-      <div class="desc">Plan a journey, manage supplies, and make decisions on the trail.</div>
-      <button class="play" onclick="launch('The Oregon Trail')">▶ PLAY GAME</button>
-    </article>
+  <section id="playerWrap" class="panel">
+    <div class="playerTop">
+      <div id="gameTitle">GAME</div>
+      <button class="back" onclick="exitGame()">← BACK TO ARCADE</button>
+    </div>
+    <div id="dos"></div>
+  </section>
 
-    <article class="card" data-category="puzzle">
-      <div class="card-top"><span class="slot">GAME 04</span><span class="tag">PUZZLE</span></div>
-      <div class="pixel-icon">🧱</div>
-      <div class="title">TETRIS</div>
-      <div class="desc">Arrange falling blocks and clear complete lines in this classic puzzle game.</div>
-      <button class="play" onclick="launch('Tetris')">▶ PLAY GAME</button>
-    </article>
+  <section class="panel rules">
+    <strong>📜 CLASSROOM ARCADE RULES</strong><br>
+    1. Play only the games Mr. Le Claire has approved.<br>
+    2. Keep the volume at a classroom-appropriate level.<br>
+    3. Treat the Chromebook and the game as learning tools.<br>
+    4. If a game does not work, tell Mr. Le Claire — don't go searching for another copy.
+  </section>
+</main>
 
-    <article class="card" data-category="arcade">
-      <div class="card-top"><span class="slot">GAME 05</span><span class="tag">ARCADE</span></div>
-      <div class="pixel-icon">🚀</div>
-      <div class="title">GAME SLOT 05</div>
-      <div class="desc">This teacher-approved slot is ready for another classic game.</div>
-      <button class="play" onclick="launch('Game Slot 05')">▶ PLAY GAME</button>
-    </article>
-
-    <article class="card" data-category="arcade">
-      <div class="card-top"><span class="slot">GAME 06</span><span class="tag">ARCADE</span></div>
-      <div class="pixel-icon">🏎️</div>
-      <div class="title">GAME SLOT 06</div>
-      <div class="desc">A future classroom-approved arcade game will go here.</div>
-      <button class="play" onclick="launch('Game Slot 06')">▶ PLAY GAME</button>
-    </article>
-
-    <article class="card" data-category="puzzle">
-      <div class="card-top"><span class="slot">GAME 07</span><span class="tag">PUZZLE</span></div>
-      <div class="pixel-icon">🧩</div>
-      <div class="title">GAME SLOT 07</div>
-      <div class="desc">A future teacher-selected puzzle game will go here.</div>
-      <button class="play" onclick="launch('Game Slot 07')">▶ PLAY GAME</button>
-    </article>
-
-    <article class="card" data-category="education">
-      <div class="card-top"><span class="slot">GAME 08</span><span class="tag">EDUCATION</span></div>
-      <div class="pixel-icon">⌨️</div>
-      <div class="title">GAME SLOT 08</div>
-      <div class="desc">A future keyboard or educational game will go here.</div>
-      <button class="play" onclick="launch('Game Slot 08')">▶ PLAY GAME</button>
-    </article>
-
-    <article class="card" data-category="strategy">
-      <div class="card-top"><span class="slot">GAME 09</span><span class="tag">STRATEGY</span></div>
-      <div class="pixel-icon">♟️</div>
-      <div class="title">GAME SLOT 09</div>
-      <div class="desc">A future strategy game will go here.</div>
-      <button class="play" onclick="launch('Game Slot 09')">▶ PLAY GAME</button>
-    </article>
-
-    <article class="card" data-category="arcade">
-      <div class="card-top"><span class="slot">GAME 10</span><span class="tag">ARCADE</span></div>
-      <div class="pixel-icon">👾</div>
-      <div class="title">GAME SLOT 10</div>
-      <div class="desc">A future teacher-approved arcade game will go here.</div>
-      <button class="play" onclick="launch('Game Slot 10')">▶ PLAY GAME</button>
-    </article>
-
-    <article class="card" data-category="puzzle">
-      <div class="card-top"><span class="slot">GAME 11</span><span class="tag">PUZZLE</span></div>
-      <div class="pixel-icon">🎯</div>
-      <div class="title">GAME SLOT 11</div>
-      <div class="desc">A future puzzle or thinking game will go here.</div>
-      <button class="play" onclick="launch('Game Slot 11')">▶ PLAY GAME</button>
-    </article>
-
-    <article class="card" data-category="arcade">
-      <div class="card-top"><span class="slot">GAME 12</span><span class="tag">ARCADE</span></div>
-      <div class="pixel-icon">🏆</div>
-      <div class="title">GAME SLOT 12</div>
-      <div class="desc">The final slot is waiting for another teacher-approved classic.</div>
-      <button class="play" onclick="launch('Game Slot 12')">▶ PLAY GAME</button>
-    </article>
-
-  </div>
-</section>
-
-<section id="rules">
-  <div class="section-title">📜 &gt;&gt; ARCADE RULES</div>
-  <div class="rules">
-    <h3>⚠ CLASSROOM MODE ENABLED</h3>
-    <ol>
-      <li>Play games that appear on this page.</li>
-      <li>Use the Chromebook appropriately and follow class directions.</li>
-      <li>If a game behaves unexpectedly or something inappropriate appears, stop playing and tell Mr. Le Claire.</li>
-      <li>Do not eat or drink over your computer .</li>
-    </ol>
-  </div>
-</section>
-
-<section id="about">
-  <div class="section-title">💿 &gt;&gt; ABOUT THIS ARCADE</div>
-  <div class="terminal">
-    <div><span class="prompt">C:\LECLAIRE\ARCADE\README.TXT&gt;</span></div>
-    <p>This is a private game launcher created by Mr. Le Claire for his fellow humans to play.</p>
-    <p>The goal is simple: give fellow humans collection of teacher-selected computer games to build computer skills.</p>
-    <p><span class="prompt">NOTE:</span> Some game buttons are placeholders until their individual, legally usable game links or embeds are added.</p>
-  </div>
-</section>
-
-<footer>
-  MR. LE CLAIRE'S TECHNOLOGY CLASS • HERITAGE CHRISTIAN SCHOOL<br>
-  DOS ARCADE SYSTEM v2.0 • CLASSROOM EDITION
-</footer>
-</div>
-
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <h2 id="modalTitle">GAME</h2>
-    <p id="modalText">This game is not connected yet.</p>
-    <p style="color:#82ad8d;font-size:12px">The arcade interface is ready. The next step is connecting each approved game.</p>
-    <button class="play close" onclick="closeModal()">CLOSE</button>
-  </div>
-</div>
+<footer>MR. LE CLAIRE'S TECHNOLOGY CLASS // DOS ARCADE // TEACHER CONTROLLED</footer>
 
 <script>
-function launch(name){
-  document.getElementById('modalTitle').textContent = name;
-  document.getElementById('modalText').textContent = 'This game slot is ready for its game link or emulator.';
-  document.getElementById('modal').classList.add('open');
+let currentPlayer = null;
+
+function playGame(url,title){
+  document.getElementById('arcade').style.display='none';
+  document.getElementById('playerWrap').style.display='block';
+  document.getElementById('gameTitle').textContent='▶ RUNNING: '+title;
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('dos').innerHTML='';
+  currentPlayer = Dos(document.getElementById('dos'), {url:url});
 }
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-document.getElementById('modal').addEventListener('click',e=>{
-  if(e.target.id==='modal') closeModal();
-});
-function filterGames(category,button){
-  document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
-  button.classList.add('active');
-  document.querySelectorAll('.card').forEach(card=>{
-    card.classList.toggle('hidden',category!=='all' && card.dataset.category!==category);
-  });
+
+function exitGame(){
+  try{
+    if(currentPlayer && currentPlayer.exit) currentPlayer.exit();
+  }catch(e){}
+  currentPlayer=null;
+  document.getElementById('dos').innerHTML='';
+  document.getElementById('playerWrap').style.display='none';
+  document.getElementById('arcade').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function comingSoon(title){
+  alert(title+' is not connected yet. This slot is waiting for a game file that can legally be hosted by the class arcade.');
 }
 </script>
 </body>
