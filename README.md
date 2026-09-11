@@ -1,2 +1,2 @@
 # Dos
-Dos games for school use
+Dos games for personal use
