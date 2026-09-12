@@ -407,7 +407,8 @@ function renderGames(){
 
       <div class="desc">${game.description}</div>
 
-      <button class="play" onclick="launchGame(${index})">
+      <button class="play"
+        onclick="launchGame(${JSON.stringify(game.name)},${JSON.stringify(game.file)})">
         ▶ PLAY GAME
       </button>
     `;
@@ -424,9 +425,6 @@ let dosInstance = null;
 
 
 function launchGame(name,gameFile){
-  const game = GAME_LIST[index];
-  const name = game.name;
-  const gameFile = game.file;
 
   document.getElementById('modalTitle').textContent = name;
 
