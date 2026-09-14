@@ -193,7 +193,9 @@ footer{text-align:center;color:#506454;font-size:11px;padding:28px 0 35px}
     modal.classList.remove("open");
   }
 
-  button.addEventListener("click", startCosmo);
+  button.addEventListener("click", function() {
+  alert("JAVASCRIPT IS WORKING!");
+});
   closeButton.addEventListener("click", closeCosmo);
 
   modal.addEventListener("click",function(event){
