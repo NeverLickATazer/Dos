@@ -194,29 +194,28 @@ footer{text-align:center;color:#506454;font-size:11px;padding:28px 0 35px}
   }
 
   button.addEventListener("click", function() {
-  const testBox = document.createElement("div");
+  modal.classList.add("open");
 
-  testBox.style.position = "fixed";
-  testBox.style.top = "20px";
-  testBox.style.left = "20px";
-  testBox.style.right = "20px";
-  testBox.style.padding = "30px";
-  testBox.style.background = "#000";
-  testBox.style.border = "3px solid #39ff72";
-  testBox.style.color = "#39ff72";
-  testBox.style.zIndex = "99999";
-  testBox.style.fontFamily = "monospace";
-  testBox.style.fontSize = "18px";
-
-  testBox.textContent = "Starting js-dos...";
-
-  document.body.appendChild(testBox);
+  container.innerHTML = "";
 
   try {
-    const result = window.Dos(testBox, {
+    dosInstance = window.Dos(container, {
       url: "games/cosmos-cosmic-adventure.jsdos",
       autoStart: true
     });
+
+    console.log("Cosmo js-dos instance started:", dosInstance);
+
+  } catch (error) {
+    console.error("Cosmo failed:", error);
+
+    container.innerHTML =
+      '<div id="error-box">' +
+      '<h3>ERROR STARTING COSMO</h3>' +
+      '<p>' + error.message + '</p>' +
+      '</div>';
+  }
+});
 
     console.log("DOS RESULT:", result);
 
