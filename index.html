@@ -193,17 +193,37 @@ footer{text-align:center;color:#506454;font-size:11px;padding:28px 0 35px}
     modal.classList.remove("open");
   }
 
-  button.addEventListener("click", async function() {
-  try {
-    const response = await fetch("games/cosmos-cosmic-adventure.jsdos");
+  button.addEventListener("click", function() {
+  const testBox = document.createElement("div");
 
-    if (response.ok) {
-      alert("GOOD! The Cosmo game file was found!");
-    } else {
-      alert("The game file was NOT found. Server response: " + response.status);
-    }
+  testBox.style.position = "fixed";
+  testBox.style.top = "20px";
+  testBox.style.left = "20px";
+  testBox.style.right = "20px";
+  testBox.style.padding = "30px";
+  testBox.style.background = "#000";
+  testBox.style.border = "3px solid #39ff72";
+  testBox.style.color = "#39ff72";
+  testBox.style.zIndex = "99999";
+  testBox.style.fontFamily = "monospace";
+  testBox.style.fontSize = "18px";
+
+  testBox.textContent = "Starting js-dos...";
+
+  document.body.appendChild(testBox);
+
+  try {
+    const result = window.Dos(testBox, {
+      url: "games/cosmos-cosmic-adventure.jsdos",
+      autoStart: true
+    });
+
+    console.log("DOS RESULT:", result);
+
+    testBox.textContent = "Dos() was called successfully. Check what happens next...";
   } catch (error) {
-    alert("Could not access the game file: " + error);
+    testBox.textContent = "DOS ERROR: " + error.message;
+    console.error(error);
   }
 });
   closeButton.addEventListener("click", closeCosmo);
