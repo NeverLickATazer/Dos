@@ -194,7 +194,11 @@ footer{text-align:center;color:#506454;font-size:11px;padding:28px 0 35px}
   }
 
   button.addEventListener("click", function() {
-  alert("JAVASCRIPT IS WORKING!");
+  if (typeof window.Dos === "function") {
+    alert("GOOD! JavaScript AND js-dos are working!");
+  } else {
+    alert("JavaScript works, BUT js-dos did NOT load!");
+  }
 });
   closeButton.addEventListener("click", closeCosmo);
 
