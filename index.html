@@ -193,11 +193,17 @@ footer{text-align:center;color:#506454;font-size:11px;padding:28px 0 35px}
     modal.classList.remove("open");
   }
 
-  button.addEventListener("click", function() {
-  if (typeof window.Dos === "function") {
-    alert("GOOD! JavaScript AND js-dos are working!");
-  } else {
-    alert("JavaScript works, BUT js-dos did NOT load!");
+  button.addEventListener("click", async function() {
+  try {
+    const response = await fetch("games/cosmos-cosmic-adventure.jsdos");
+
+    if (response.ok) {
+      alert("GOOD! The Cosmo game file was found!");
+    } else {
+      alert("The game file was NOT found. Server response: " + response.status);
+    }
+  } catch (error) {
+    alert("Could not access the game file: " + error);
   }
 });
   closeButton.addEventListener("click", closeCosmo);
