@@ -6,6 +6,7 @@
 <title>Mr. Le Claire's DOS Arcade</title>
 <link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
 <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
 html,body{margin:0;min-height:100%;background:#000;color:#39ff72;font-family:"Courier New",monospace}
 body{padding:20px;box-sizing:border-box}
@@ -33,30 +34,101 @@ const games={
 const selected=games[game];
 const title=document.getElementById('title');
 const status=document.getElementById('status');
-if(!selected){
-  title.textContent='GAME NOT FOUND';
-  status.textContent='No valid game was selected.';
-}else{
+const player=document.getElementById('player');
+
+async function startGame(){
+  if(!selected){
+    title.textContent='GAME NOT FOUND';
+    status.textContent='No valid game was selected.';
+    return;
+  }
+
   title.textContent=selected.title;
+
   try{
     if(typeof window.Dos!=='function') throw new Error('js-dos did not load.');
-    Dos(document.getElementById('player'),{
-      url:selected.url,
-      autoStart:true,
-      imageRendering:'pixelated',
-      renderBackend:'canvas',
-      renderAspect:'4/3',
-      offscreenCanvas:false,
-      onEvent:function(event,arg){
-        console.log('js-dos event:',event,arg);
-        status.textContent='js-dos: '+event;
+
+    if(game==='cosmo'){
+      status.textContent='Preparing Cosmo with a DOSBox graphics configuration...';
+      if(typeof JSZip!=='function') throw new Error('The ZIP library did not load.');
+
+      const response=await fetch(selected.url);
+      if(!response.ok) throw new Error('Could not load the Cosmo game file.');
+      const zip=await JSZip.loadAsync(await response.arrayBuffer());
+      const initFs=[];
+
+      for(const name of Object.keys(zip.files)){
+        const entry=zip.files[name];
+        if(entry.dir || name.startsWith('.jsdos/')) continue;
+        initFs.push({path:name,contents:await entry.async('uint8array')});
       }
-    });
+
+      const cosmoConfig=`
+[dosbox]
+machine=svga_s3
+
+[sdl]
+autolock=false
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[cpu]
+core=normal
+cycles=max
+cycleup=500
+cycledown=500
+
+[render]
+aspect=true
+scaler=normal2x
+
+[autoexec]
+mount c .
+c:
+cd COSMO
+loadfix -25
+COSMO1.EXE
+`;
+
+      status.textContent='Starting Cosmo...';
+      Dos(player,{
+        dosboxConf:cosmoConfig,
+        initFs:initFs,
+        autoStart:true,
+        imageRendering:'pixelated',
+        renderBackend:'canvas',
+        renderAspect:'4/3',
+        offscreenCanvas:false,
+        onEvent:function(event,arg){
+          console.log('js-dos event:',event,arg);
+          status.textContent='js-dos: '+event;
+        }
+      });
+    }else{
+      Dos(player,{
+        url:selected.url,
+        autoStart:true,
+        imageRendering:'pixelated',
+        renderBackend:'canvas',
+        renderAspect:'4/3',
+        offscreenCanvas:false,
+        onEvent:function(event,arg){
+          console.log('js-dos event:',event,arg);
+          status.textContent='js-dos: '+event;
+        }
+      });
+    }
   }catch(error){
     status.textContent='ERROR: '+(error.message||error);
     console.error(error);
   }
 }
+
+startGame();
 </script>
 </body>
 </html>
