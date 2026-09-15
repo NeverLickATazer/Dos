@@ -19,34 +19,52 @@
 <section id="games"><div class="section-title">🕹️ &gt;&gt; SELECT A GAME</div><div class="games">
 <article class="card"><div class="card-top"><span class="slot">GAME 01</span><span class="tag">ARCADE</span></div><div class="pixel-icon">👽</div><div class="title">COSMO'S COSMIC ADVENTURE</div><div class="desc">Help Cosmo rescue his parents in this classic Apogee platform adventure.</div><button class="play" id="cosmoButton" type="button">▶ PLAY GAME</button></article>
 <article class="card"><div class="card-top"><span class="slot">GAME 02</span><span class="tag">ACTION</span></div><div class="pixel-icon">🐑</div><div class="title">SUPER 3-D NOAH'S ARK</div><div class="desc">A classic DOS-era 3-D game packaged for the browser.</div><button class="play" id="noahButton" type="button">▶ PLAY GAME</button></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 03</span><span class="tag">ARCADE</span></div><div class="pixel-icon">💎</div><div class="title">DIGGER</div><div class="desc">A verified js-dos test game. This one uses the official js-dos Digger bundle.</div><button class="play" id="diggerButton" type="button">▶ PLAY GAME</button></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 03</span><span class="tag">ARCADE</span></div><div class="pixel-icon">💎</div><div class="title">DIGGER</div><div class="desc">A verified js-dos test game using the official js-dos Digger bundle.</div><button class="play" id="diggerButton" type="button">▶ PLAY GAME</button></article>
 <article class="card"><div class="card-top"><span class="slot">GAME 04</span><span class="tag">STRATEGY</span></div><div class="pixel-icon">🐂</div><div class="title">THE OREGON TRAIL</div><div class="desc">Game file not installed yet.</div><button class="play" disabled>NOT INSTALLED</button></article>
 </div></section>
 <section id="rules"><div class="section-title">📜 &gt;&gt; ARCADE RULES</div><div class="rules"><h3>⚠ CLASSROOM MODE ENABLED</h3><ol><li>Play games that appear on this page.</li><li>Use the Chromebook appropriately and follow class directions.</li><li>If a game behaves unexpectedly or something inappropriate appears, stop playing and tell Mr. Le Claire.</li><li>Do not eat or drink over your computer.</li></ol></div></section>
 <section id="about"><div class="section-title">💿 &gt;&gt; ABOUT THIS ARCADE</div><div class="terminal"><div><span class="prompt">C:\LECLAIRE\ARCADE\README.TXT&gt;</span></div><p>This is a private game launcher created by Mr. Le Claire for his fellow humans to play.</p><p>The arcade uses js-dos to run teacher-selected DOS programs directly in the browser.</p></div></section>
-<footer>MR. LE CLAIRE'S TECHNOLOGY CLASS • HERITAGE CHRISTIAN SCHOOL<br>DOS ARCADE SYSTEM v2.2 • CLASSROOM EDITION</footer>
+<footer>MR. LE CLAIRE'S TECHNOLOGY CLASS • HERITAGE CHRISTIAN SCHOOL<br>DOS ARCADE SYSTEM v2.3 • CLASSROOM EDITION</footer>
 </div>
-<div class="modal" id="modal"><div class="modal-box"><h2 id="gameTitle">DOS GAME</h2><div id="launch-status">Waiting for launcher...</div><div id="dos-container"></div><button class="play close" id="closeButton" type="button">CLOSE GAME</button></div></div>
+<div class="modal" id="modal"><div class="modal-box"><h2 id="gameTitle">DOS GAME</h2><div id="launch-status">Click a game to start.</div><div id="dos-container"></div><button class="play close" id="closeButton" type="button">CLOSE GAME</button></div></div>
 <script>
 (function(){
-const modal=document.getElementById("modal"),container=document.getElementById("dos-container"),status=document.getElementById("launch-status"),gameTitle=document.getElementById("gameTitle");
-let dosInstance=null,launchTimer=null;
-function setStatus(text){status.textContent=text;console.log("DOS Arcade:",text)}
-function launchGame(title,gameFile){
- modal.classList.add("open");gameTitle.textContent=title;container.innerHTML="";setStatus("Starting js-dos emulator...");clearTimeout(launchTimer);
- try{
-  if(typeof window.Dos!=="function")throw new Error("js-dos did not load.");
-  dosInstance=window.Dos(container,{url:gameFile,autoStart:true,onEvent:function(event,arg){console.log("js-dos event:",event,arg);if(event==="emu-ready")setStatus("Emulator ready. Starting game...");else if(event==="bnd-play")setStatus("Game bundle loaded. Starting DOS program...");else if(event==="ci-ready")setStatus("DOS command interface ready. Loading game...");else if(event==="fullscreen-change")setStatus("Game display ready.")}});
-  setStatus("js-dos player created. Waiting for emulator...");
-  launchTimer=setTimeout(function(){setStatus("The game is taking longer than expected to start.")},20000);
- }catch(error){console.error("Game failed:",error);setStatus("Game failed to start.");container.innerHTML='<div id="error-box"><h3>ERROR STARTING GAME</h3><p>'+String(error.message||error)+'</p></div>'}
+'use strict';
+function byId(id){return document.getElementById(id)}
+var modal=byId('modal');
+var container=byId('dos-container');
+var status=byId('launch-status');
+var title=byId('gameTitle');
+var player=null;
+function launch(gameTitle,gameUrl){
+  modal.classList.add('open');
+  title.textContent=gameTitle;
+  status.textContent='Loading js-dos...';
+  container.innerHTML='';
+  if(typeof window.Dos!=='function'){
+    status.textContent='ERROR: js-dos did not load. Please reload the page.';
+    return;
+  }
+  try{
+    player=window.Dos(container,{url:gameUrl,autoStart:true,onEvent:function(event){
+      if(event==='emu-ready') status.textContent='Emulator ready...';
+      if(event==='bnd-play') status.textContent='Game starting...';
+      if(event==='ci-ready') status.textContent='DOS game running.';
+    }});
+  }catch(error){
+    console.error(error);
+    status.textContent='ERROR: '+(error.message||String(error));
+  }
 }
-document.getElementById("cosmoButton").addEventListener("click",function(){launchGame("COSMO'S COSMIC ADVENTURE","games/cosmos-cosmic-adventure.jsdos")});
-document.getElementById("noahButton").addEventListener("click",function(){launchGame("SUPER 3-D NOAH'S ARK","games/noahs-ark.jsdos")});
-document.getElementById("diggerButton").addEventListener("click",function(){launchGame("DIGGER","https://v8.js-dos.com/bundles/digger.jsdos")});
-window.addEventListener("error",function(e){if(modal.classList.contains("open"))setStatus("Browser error while starting the game: "+(e.message||"unknown error"))});
-window.addEventListener("unhandledrejection",function(e){if(modal.classList.contains("open"))setStatus("Startup error: "+String(e.reason&&e.reason.message||e.reason||"unknown error"))});
-document.getElementById("closeButton").addEventListener("click",async function(){clearTimeout(launchTimer);if(dosInstance&&typeof dosInstance.stop==="function"){try{await dosInstance.stop()}catch(e){console.warn(e)}}dosInstance=null;container.innerHTML="";modal.classList.remove("open")});
+byId('cosmoButton').onclick=function(){launch("COSMO'S COSMIC ADVENTURE",'games/cosmos-cosmic-adventure.jsdos')};
+byId('noahButton').onclick=function(){launch("SUPER 3-D NOAH'S ARK",'games/noahs-ark.jsdos')};
+byId('diggerButton').onclick=function(){launch('DIGGER','https://v8.js-dos.com/bundles/digger.jsdos')};
+byId('closeButton').onclick=function(){
+  if(player&&typeof player.stop==='function') player.stop().catch(function(e){console.warn(e)});
+  player=null;
+  container.innerHTML='';
+  modal.classList.remove('open');
+};
 })();
 </script>
 </body>
