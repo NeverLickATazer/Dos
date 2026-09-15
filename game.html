@@ -54,8 +54,8 @@ async function startGame(){
    if(entry.dir||name.startsWith('.jsdos/'))continue;
    initFs.push({path:name,contents:await entry.async('uint8array')});
   }
-  const config=`[sdl]\nautolock=false\n\n[dos]\nxms=true\nems=true\numb=true\nkeyboardlayout=auto\n\n[cpu]\ncycles=auto 3300\ncycleup=500\ncycledown=500\n\n[render]\naspect=true\nscaler=normal3x\n\n[autoexec]\nmount c .\nc:\ncd COSMO\nloadfix -25\nCOSMO1.EXE\n`;
-  status.textContent='Starting Cosmo...';
+  const config=`[sdl]\nautolock=false\n\n[dosbox]\nmachine=ega\n\n[dos]\nxms=true\nems=true\numb=true\nkeyboardlayout=auto\n\n[cpu]\ncycles=auto 3300\ncycleup=500\ncycledown=500\n\n[render]\naspect=true\nscaler=normal3x\n\n[autoexec]\nmount c .\nc:\ncd COSMO\nloadfix -25\nCOSMO1.EXE\n`;
+  status.textContent='Starting Cosmo in EGA mode...';
   Dos(player,{dosboxConf:config,initFs:initFs,autoStart:true,onEvent:(e)=>status.textContent='js-dos: '+e});
  }catch(error){status.textContent='ERROR: '+(error.message||error);console.error(error);}
 }
