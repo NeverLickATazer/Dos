@@ -43,6 +43,10 @@ if(!selected){
     Dos(document.getElementById('player'),{
       url:selected.url,
       autoStart:true,
+      imageRendering:'pixelated',
+      renderBackend:'canvas',
+      renderAspect:'4/3',
+      offscreenCanvas:false,
       onEvent:function(event,arg){
         console.log('js-dos event:',event,arg);
         status.textContent='js-dos: '+event;
