@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. Le Claire's DOS Arcade - Digger Test</title>
+<link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
+<script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+<style>
+html,body{margin:0;min-height:100%;background:#000;color:#39ff72;font-family:"Courier New",monospace}body{padding:20px;box-sizing:border-box}.wrap{max-width:1000px;margin:auto}h1{border:3px solid #39ff72;padding:15px;text-align:center;background:#071008}p{color:#ffe66d}.player{width:100%;height:min(70vh,650px);min-height:400px;border:2px solid #23833c;background:#000}.status{padding:10px;border:1px solid #23833c;margin:12px 0;color:#ffe66d}a{color:#39ff72}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>💾 DOS ARCADE — JS-DOS TEST 💾</h1>
+<p>This page uses the official Digger js-dos bundle supplied by the js-dos project. It is intentionally separate from the local game files so we can test whether the arcade's browser emulator works.</p>
+<div id="status" class="status">Starting Digger...</div>
+<div id="player" class="player"></div>
+<p><a href="index.html">← Back to Mr. Le Claire's DOS Arcade</a></p>
+</div>
+<script>
+const status=document.getElementById('status');
+try{
+  if(typeof window.Dos!=='function') throw new Error('js-dos did not load.');
+  Dos(document.getElementById('player'),{
+    url:'https://v8.js-dos.com/bundles/digger.jsdos',
+    autoStart:true,
+    onEvent:function(event,arg){
+      console.log('js-dos event:',event,arg);
+      status.textContent='js-dos: '+event;
+    }
+  });
+}catch(error){
+  status.textContent='ERROR: '+(error.message||error);
+  console.error(error);
+}
+</script>
+</body>
+</html>
