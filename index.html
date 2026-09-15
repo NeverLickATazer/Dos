@@ -13,101 +13,40 @@
 </head>
 <body>
 <div class="container">
-<header><div class="logo">💾 MR. LE CLAIRE'S ARCADE 💾</div><div class="subtitle">This website constitutes a meticulously curated digital environment in which each game has been deliberately selected by Mr. Le Claire according to age-appropriateness, educational merit, and technological relevance. Rather than functioning as mere recreational diversions, these interactive experiences are designed to cultivate and reinforce essential technological competencies, including digital literacy, problem-solving, computational thinking, coordination, and responsible interaction with digital interfaces. Accordingly, parents and educators can regard this collection as a pedagogically intentional and developmentally appropriate resource in which students may engage with technology in a manner that is simultaneously entertaining, secure, and substantively beneficial to their ongoing technological development.
-</div><div class="status"><span>SYSTEM ONLINE</span><span>NOAH'S ARK PORT ADDED</span><span>HUMAN MODE</span></div></header>
+<header><div class="logo">💾 MR. LE CLAIRE'S ARCADE 💾</div><div class="subtitle">A teacher-curated collection of classic computer games for learning, problem-solving, digital literacy, and responsible technology use.</div><div class="status"><span>SYSTEM ONLINE</span><span>JS-DOS ONLINE</span><span>CLASSROOM MODE</span></div></header>
 <nav><a href="#games">[ GAMES ]</a><a href="#rules">[ RULES ]</a><a href="#about">[ ABOUT ]</a></nav>
-<div class="terminal"><div><span class="prompt">C:\LECLAIRE\ARCADE&gt;</span> START ARCADE.EXE</div><div>Loading approved games.................................... <b>OK</b></div><div>Checking classroom mode.................................. <b>OK</b></div><div>Cosmo game port........................................... <b>READY</b></div><div>Welcome, Fellow Human!</div></div>
-<section id="games"><div class="section-title">🕹️ &gt;&gt; SELECT A GAME</div><div class="games"><article class="card"><div class="card-top"><span class="slot">GAME 01</span><span class="tag">ARCADE</span></div><div class="pixel-icon">👽</div><div class="title">COSMO'S COSMIC ADVENTURE</div><div class="desc">Help Cosmo rescue his parents in this classic Apogee platform adventure.</div><button class="play" id="cosmoButton" type="button">▶ PLAY GAME</button></article><article class="card"><div class="card-top"><span class="slot">GAME 02</span><span class="tag">ACTION</span></div><div class="pixel-icon">🐑</div><div class="title">SUPER 3-D NOAH'S ARK</div><div class="desc">A classic DOS-era 3-D game. This version is packaged to launch directly through the arcade's js-dos emulator.</div><button class="play" id="noahButton" type="button">▶ PLAY GAME</button></article><article class="card"><div class="card-top"><span class="slot">GAME 03</span><span class="tag">STRATEGY</span></div><div class="pixel-icon">🐂</div><div class="title">THE OREGON TRAIL</div><div class="desc">Game file not installed yet.</div><button class="play" disabled>NOT INSTALLED</button></article><article class="card"><div class="card-top"><span class="slot">GAME 04</span><span class="tag">PUZZLE</span></div><div class="pixel-icon">🧱</div><div class="title">TETRIS</div><div class="desc">Game file not installed yet.</div><button class="play" disabled>NOT INSTALLED</button></article></div></section>
+<div class="terminal"><div><span class="prompt">C:\LECLAIRE\ARCADE&gt;</span> START ARCADE.EXE</div><div>Loading approved games.................................... <b>OK</b></div><div>Checking classroom mode.................................. <b>OK</b></div><div>js-dos emulator............................................ <b>ONLINE</b></div><div>Welcome, Fellow Human!</div></div>
+<section id="games"><div class="section-title">🕹️ &gt;&gt; SELECT A GAME</div><div class="games">
+<article class="card"><div class="card-top"><span class="slot">GAME 01</span><span class="tag">ARCADE</span></div><div class="pixel-icon">👽</div><div class="title">COSMO'S COSMIC ADVENTURE</div><div class="desc">Help Cosmo rescue his parents in this classic Apogee platform adventure.</div><button class="play" id="cosmoButton" type="button">▶ PLAY GAME</button></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 02</span><span class="tag">ACTION</span></div><div class="pixel-icon">🐑</div><div class="title">SUPER 3-D NOAH'S ARK</div><div class="desc">A classic DOS-era 3-D game packaged for the browser.</div><button class="play" id="noahButton" type="button">▶ PLAY GAME</button></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 03</span><span class="tag">ARCADE</span></div><div class="pixel-icon">💎</div><div class="title">DIGGER</div><div class="desc">A verified js-dos test game. This one uses the official js-dos Digger bundle.</div><button class="play" id="diggerButton" type="button">▶ PLAY GAME</button></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 04</span><span class="tag">STRATEGY</span></div><div class="pixel-icon">🐂</div><div class="title">THE OREGON TRAIL</div><div class="desc">Game file not installed yet.</div><button class="play" disabled>NOT INSTALLED</button></article>
+</div></section>
 <section id="rules"><div class="section-title">📜 &gt;&gt; ARCADE RULES</div><div class="rules"><h3>⚠ CLASSROOM MODE ENABLED</h3><ol><li>Play games that appear on this page.</li><li>Use the Chromebook appropriately and follow class directions.</li><li>If a game behaves unexpectedly or something inappropriate appears, stop playing and tell Mr. Le Claire.</li><li>Do not eat or drink over your computer.</li></ol></div></section>
 <section id="about"><div class="section-title">💿 &gt;&gt; ABOUT THIS ARCADE</div><div class="terminal"><div><span class="prompt">C:\LECLAIRE\ARCADE\README.TXT&gt;</span></div><p>This is a private game launcher created by Mr. Le Claire for his fellow humans to play.</p><p>The arcade uses js-dos to run teacher-selected DOS programs directly in the browser.</p></div></section>
-<footer>MR. LE CLAIRE'S TECHNOLOGY CLASS • HERITAGE CHRISTIAN SCHOOL<br>DOS ARCADE SYSTEM v2.1 • CLASSROOM EDITION</footer>
+<footer>MR. LE CLAIRE'S TECHNOLOGY CLASS • HERITAGE CHRISTIAN SCHOOL<br>DOS ARCADE SYSTEM v2.2 • CLASSROOM EDITION</footer>
 </div>
 <div class="modal" id="modal"><div class="modal-box"><h2 id="gameTitle">DOS GAME</h2><div id="launch-status">Waiting for launcher...</div><div id="dos-container"></div><button class="play close" id="closeButton" type="button">CLOSE GAME</button></div></div>
 <script>
 (function(){
-  const modal=document.getElementById("modal");
-  const container=document.getElementById("dos-container");
-  const status=document.getElementById("launch-status");
-  const gameTitle=document.getElementById("gameTitle");
-  const cosmoButton=document.getElementById("cosmoButton");
-  const noahButton=document.getElementById("noahButton");
-  const closeButton=document.getElementById("closeButton");
-  let dosInstance=null;
-  let launchTimer=null;
-
-  function setStatus(text){status.textContent=text;console.log("DOS Arcade:",text)}
-
-  function launchGame(title, gameFile){
-    modal.classList.add("open");
-    gameTitle.textContent=title;
-    container.innerHTML="";
-    setStatus("Starting js-dos emulator...");
-    clearTimeout(launchTimer);
-
-    try{
-      if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
-      dosInstance=window.Dos(container,{
-        url:gameFile,
-        autoStart:true,
-        backend:"dosbox",
-        backendLocked:true,
-        theme:"dark",
-        imageRendering:"pixelated",
-        renderAspect:"4/3",
-        onEvent:function(event,arg){
-          console.log("js-dos event:",event,arg);
-          if(event==="emu-ready") setStatus("Emulator ready. Starting game...");
-          else if(event==="bnd-play") setStatus("Game bundle loaded. Starting DOS program...");
-          else if(event==="ci-ready") setStatus("DOS command interface ready. Loading game...");
-          else if(event==="fullscreen-change") setStatus("Game display ready.");
-        }
-      });
-      setStatus("js-dos player created. Waiting for emulator...");
-      launchTimer=setTimeout(function(){
-        setStatus("The emulator is taking longer than expected. Check that the games folder was uploaded with the website.");
-      },20000);
-    }catch(error){
-      console.error("Game failed:",error);
-      setStatus("Game failed to start.");
-      container.innerHTML='<div id="error-box"><h3>ERROR STARTING GAME</h3><p>'+String(error.message||error)+'</p></div>';
-    }
-  }
-
-  // Cosmo remains unchanged as a separate work-in-progress game.
-  cosmoButton.addEventListener("click",function(){
-    launchGame("COSMO'S COSMIC ADVENTURE","games/cosmos-cosmic-adventure.jsdos");
-  });
-
-  // Noah's Ark uses the new bundle created for this arcade.
-  noahButton.addEventListener("click",function(){
-    launchGame("SUPER 3-D NOAH'S ARK","games/noahs-ark.jsdos");
-  });
-
-  window.addEventListener("error",function(event){
-    if(modal.classList.contains("open")){
-      console.error("DOS window error:",event.error||event.message);
-      setStatus("Browser error while starting the game: "+(event.message||"unknown error"));
-    }
-  });
-
-  window.addEventListener("unhandledrejection",function(event){
-    if(modal.classList.contains("open")){
-      console.error("DOS promise error:",event.reason);
-      setStatus("Startup error: "+String(event.reason&&event.reason.message||event.reason||"unknown error"));
-    }
-  });
-
-  closeButton.addEventListener("click",async function(){
-    clearTimeout(launchTimer);
-    if(dosInstance&&typeof dosInstance.stop==="function"){
-      try{await dosInstance.stop();}catch(e){console.warn(e);}
-    }
-    dosInstance=null;
-    container.innerHTML="";
-    gameTitle.textContent="DOS GAME";
-    setStatus("Waiting for launcher...");
-    modal.classList.remove("open");
-  });
+const modal=document.getElementById("modal"),container=document.getElementById("dos-container"),status=document.getElementById("launch-status"),gameTitle=document.getElementById("gameTitle");
+let dosInstance=null,launchTimer=null;
+function setStatus(text){status.textContent=text;console.log("DOS Arcade:",text)}
+function launchGame(title,gameFile){
+ modal.classList.add("open");gameTitle.textContent=title;container.innerHTML="";setStatus("Starting js-dos emulator...");clearTimeout(launchTimer);
+ try{
+  if(typeof window.Dos!=="function")throw new Error("js-dos did not load.");
+  dosInstance=window.Dos(container,{url:gameFile,autoStart:true,onEvent:function(event,arg){console.log("js-dos event:",event,arg);if(event==="emu-ready")setStatus("Emulator ready. Starting game...");else if(event==="bnd-play")setStatus("Game bundle loaded. Starting DOS program...");else if(event==="ci-ready")setStatus("DOS command interface ready. Loading game...");else if(event==="fullscreen-change")setStatus("Game display ready.")}});
+  setStatus("js-dos player created. Waiting for emulator...");
+  launchTimer=setTimeout(function(){setStatus("The game is taking longer than expected to start.")},20000);
+ }catch(error){console.error("Game failed:",error);setStatus("Game failed to start.");container.innerHTML='<div id="error-box"><h3>ERROR STARTING GAME</h3><p>'+String(error.message||error)+'</p></div>'}
+}
+document.getElementById("cosmoButton").addEventListener("click",function(){launchGame("COSMO'S COSMIC ADVENTURE","games/cosmos-cosmic-adventure.jsdos")});
+document.getElementById("noahButton").addEventListener("click",function(){launchGame("SUPER 3-D NOAH'S ARK","games/noahs-ark.jsdos")});
+document.getElementById("diggerButton").addEventListener("click",function(){launchGame("DIGGER","https://v8.js-dos.com/bundles/digger.jsdos")});
+window.addEventListener("error",function(e){if(modal.classList.contains("open"))setStatus("Browser error while starting the game: "+(e.message||"unknown error"))});
+window.addEventListener("unhandledrejection",function(e){if(modal.classList.contains("open"))setStatus("Startup error: "+String(e.reason&&e.reason.message||e.reason||"unknown error"))});
+document.getElementById("closeButton").addEventListener("click",async function(){clearTimeout(launchTimer);if(dosInstance&&typeof dosInstance.stop==="function"){try{await dosInstance.stop()}catch(e){console.warn(e)}}dosInstance=null;container.innerHTML="";modal.classList.remove("open")});
 })();
 </script>
 </body>
