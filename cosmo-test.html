@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmo Test - Mr. Le Claire's DOS Arcade</title>
+<link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
+<script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+html,body{margin:0;min-height:100%;background:#000;color:#39ff72;font-family:"Courier New",monospace}
+body{padding:20px;box-sizing:border-box}.wrap{max-width:1000px;margin:auto}
+h1{border:3px solid #39ff72;padding:15px;text-align:center;background:#071008}
+.status{padding:10px;border:1px solid #23833c;margin:12px 0;color:#ffe66d}
+button{background:#071008;color:#39ff72;border:2px solid #39ff72;padding:12px 18px;margin:4px;font:inherit;cursor:pointer}
+button:hover{background:#123018}.player{width:100%;height:min(70vh,650px);min-height:400px;border:2px solid #23833c;background:#000}a{color:#39ff72}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>👽 COSMO CONFIGURATION TEST</h1>
+<p>This is a separate test page. It does not change the normal Cosmo game.</p>
+<div>
+<button onclick="location.href='?mode=classic'">Test A — DOSBox classic</button>
+<button onclick="location.href='?mode=default'">Test B — Bundle default</button>
+</div>
+<div id="status" class="status">Choose a test above.</div>
+<div id="player" class="player"></div>
+<p><a href="index.html">← Back to Mr. Le Claire's DOS Arcade</a></p>
+</div>
+<script>
+const mode=new URLSearchParams(location.search).get('mode');
+const status=document.getElementById('status');
+const player=document.getElementById('player');
+
+async function start(){
+ if(!mode)return;
+ try{
+  status.textContent='Preparing Cosmo test...';
+  const response=await fetch('games/cosmos-cosmic-adventure.jsdos');
+  if(!response.ok)throw new Error('Could not load the Cosmo file.');
+  const zip=await JSZip.loadAsync(await response.arrayBuffer());
+  const initFs=[];
+  for(const name of Object.keys(zip.files)){
+   const entry=zip.files[name];
+   if(entry.dir||name.startsWith('.jsdos/'))continue;
+   initFs.push({path:name,contents:await entry.async('uint8array')});
+  }
+  let config;
+  if(mode==='classic'){
+   config=`[sdl]\nautolock=false\n\n[dosbox]\nmachine=svga_s3\n\n[dos]\nxms=true\nems=true\numb=true\nkeyboardlayout=auto\n\n[cpu]\ncore=normal\ncycles=auto\ncycleup=500\ncycledown=500\n\n[render]\naspect=true\nscaler=normal2x\nframeskip=0\n\n[autoexec]\nmount c .\nc:\ncd COSMO\nloadfix -25\nCOSMO1.EXE\n`;
+   status.textContent='Test A: DOSBox-style configuration';
+  }else{
+   config=`[sdl]\nautolock=false\n\n[dos]\nxms=true\nems=true\numb=true\nkeyboardlayout=auto\n\n[cpu]\ncycles=auto\ncycleup=500\ncycledown=500\n\n[render]\naspect=true\n\n[autoexec]\nmount c .\nc:\ncd COSMO\nloadfix -25\nCOSMO1.EXE\n`;
+   status.textContent='Test B: simple/default configuration';
+  }
+  Dos(player,{dosboxConf:config,initFs:initFs,autoStart:true,onEvent:(e)=>status.textContent='js-dos: '+e});
+ }catch(error){status.textContent='ERROR: '+(error.message||error);console.error(error);}
+}
+start();
+</script>
+</body>
+</html>
