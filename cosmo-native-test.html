@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmo Native Test - Mr. Le Claire's DOS Arcade</title>
+<style>
+  body { margin:0; font-family:Arial, sans-serif; background:#111; color:#eee; text-align:center; }
+  .wrap { max-width:760px; margin:0 auto; padding:32px 20px 50px; }
+  h1 { color:#7fd8ff; margin-bottom:8px; }
+  .card { background:#222; border:2px solid #444; border-radius:12px; padding:24px; margin-top:24px; text-align:left; }
+  .button { display:inline-block; background:#1677b8; color:white; text-decoration:none; padding:14px 20px; border-radius:8px; font-weight:bold; margin:8px 4px; }
+  .button:hover { background:#2495df; }
+  .note { color:#bbb; line-height:1.6; }
+  code { background:#333; padding:2px 5px; border-radius:4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cosmo's Cosmic Adventure — Native Test</h1>
+  <p class="note">This is a diagnostic test for the graphics problem we found in the browser DOS version.</p>
+
+  <div class="card">
+    <h2>Why are we testing this?</h2>
+    <p class="note">The browser version is producing the same graphical corruption with two very different DOSBox configurations. The modern Cosmo source port uses its own EGA emulation instead of DOSBox, so it gives us a clean comparison.</p>
+    <p class="note">The native port is an independent project built from the original game's code. Its EGA implementation specifically emulates the hardware features Cosmo uses, including EGA write modes and latches.</p>
+    <p style="text-align:center">
+      <a class="button" href="https://github.com/digows/cosmo/releases/latest">Download Native Cosmo</a>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>What to do</h2>
+    <ol class="note">
+      <li>Click <b>Download Native Cosmo</b>.</li>
+      <li>Download the <b>Windows</b> ZIP.</li>
+      <li>Extract it somewhere on your computer.</li>
+      <li>Run the Cosmo program inside it.</li>
+      <li>Play long enough to reach the first actual game area, not just the title screen.</li>
+    </ol>
+    <p class="note"><b>If the native version looks correct:</b> that strongly points to the browser DOSBox layer as the source of our graphics problem.</p>
+    <p class="note"><b>If the native version has the same corruption:</b> then we need to investigate the game data or an original Cosmo rendering problem instead.</p>
+  </div>
+
+  <p style="margin-top:28px"><a class="button" href="index.html">← Back to DOS Arcade</a></p>
+</div>
+</body>
+</html>
