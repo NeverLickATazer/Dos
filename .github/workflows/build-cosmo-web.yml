@@ -1,0 +1,57 @@
+name: Build Cosmo Web
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-cosmo-web.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out arcade
+        uses: actions/checkout@v4
+
+      - name: Install Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: latest
+          actions-cache-folder: emsdk-cache
+
+      - name: Clone native Cosmo source
+        run: |
+          git clone --depth 1 --recurse-submodules https://github.com/digows/cosmo.git cosmo-src
+
+      - name: Configure Emscripten build
+        shell: bash
+        run: |
+          source "$EMSDK/emsdk_env.sh"
+          emcmake cmake -S cosmo-src -B cosmo-build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCOSMO_BUILD_TESTS=OFF \
+            -DCOSMO_BUILD_GAME=ON \
+            -DCOSMO_BUNDLE=OFF \
+            -DCOSMO_FETCH_SDL=ON \
+            -DCMAKE_C_FLAGS='-sALLOW_MEMORY_GROWTH=1' \
+            -DCMAKE_CXX_FLAGS='-sALLOW_MEMORY_GROWTH=1'
+
+      - name: Build
+        shell: bash
+        run: |
+          source "$EMSDK/emsdk_env.sh"
+          cmake --build cosmo-build --config Release -j2
+
+      - name: Show build output
+        run: find cosmo-build -maxdepth 3 -type f \( -name '*.js' -o -name '*.wasm' -o -name '*.html' -o -name 'cosmo*' \) -print
+
+      - name: Upload experimental web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: cosmo-web-experimental
+          path: |
+            cosmo-build/**/*.js
+            cosmo-build/**/*.wasm
+            cosmo-build/**/*.data
+            cosmo-build/**/*.html
+          if-no-files-found: error
