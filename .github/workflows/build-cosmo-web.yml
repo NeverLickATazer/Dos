@@ -35,8 +35,14 @@ jobs:
             -DCOSMO_FETCH_SDL=ON \
             -DCMAKE_C_EXTENSIONS=ON \
             -DCMAKE_CXX_EXTENSIONS=ON \
-            -DCMAKE_C_FLAGS='-sALLOW_MEMORY_GROWTH=1' \
-            -DCMAKE_CXX_FLAGS='-sALLOW_MEMORY_GROWTH=1'
+            -DCMAKE_EXE_LINKER_FLAGS='-sALLOW_MEMORY_GROWTH=1' \
+            -DCMAKE_SHARED_LINKER_FLAGS='-sALLOW_MEMORY_GROWTH=1'
+
+      - name: Fix Emscripten C extension mode for SDL3
+        shell: bash
+        run: |
+          find cosmo-build -type f \( -name 'build.make' -o -name 'flags.make' -o -name 'link.txt' \) -print0 | \
+            xargs -0 -r sed -i -E 's/-std=c([0-9]+)/-std=gnu\1/g'
 
       - name: Build
         shell: bash
@@ -45,7 +51,7 @@ jobs:
           cmake --build cosmo-build --config Release -j2
 
       - name: Show build output
-        run: find cosmo-build -maxdepth 3 -type f \( -name '*.js' -o -name '*.wasm' -o -name '*.html' -o -name 'cosmo*' \) -print
+        run: find cosmo-build -maxdepth 3 -type f \( -name '*.js' -o -name '*.wasm' -o -name '*.data' -o -name '*.html' -o -name 'cosmo*' \) -print
 
       - name: Upload experimental web build
         uses: actions/upload-artifact@v4
