@@ -33,6 +33,8 @@ jobs:
             -DCOSMO_BUILD_GAME=ON \
             -DCOSMO_BUNDLE=OFF \
             -DCOSMO_FETCH_SDL=ON \
+            -DCMAKE_C_EXTENSIONS=ON \
+            -DCMAKE_CXX_EXTENSIONS=ON \
             -DCMAKE_C_FLAGS='-sALLOW_MEMORY_GROWTH=1' \
             -DCMAKE_CXX_FLAGS='-sALLOW_MEMORY_GROWTH=1'
 
