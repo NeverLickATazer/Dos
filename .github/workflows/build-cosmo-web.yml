@@ -23,6 +23,18 @@ jobs:
         run: |
           git clone --depth 1 --recurse-submodules https://github.com/digows/cosmo.git cosmo-src
 
+      - name: Prepare Cosmo game data for WebAssembly
+        shell: bash
+        run: |
+          mkdir -p web-data
+          python3 - <<'PY'
+          import zipfile
+          with zipfile.ZipFile("games/cosmos-cosmic-adventure.jsdos") as z:
+              for name in ("COSMO/COSMO1.STN", "COSMO/COSMO1.VOL"):
+                  with z.open(name) as src, open("web-data/" + name.rsplit("/", 1)[-1], "wb") as dst:
+                      dst.write(src.read())
+          PY
+
       - name: Configure Emscripten build
         shell: bash
         run: |
@@ -35,7 +47,7 @@ jobs:
             -DCOSMO_FETCH_SDL=ON \
             -DCMAKE_C_EXTENSIONS=ON \
             -DCMAKE_CXX_EXTENSIONS=ON \
-            -DCMAKE_EXE_LINKER_FLAGS='-sALLOW_MEMORY_GROWTH=1' \
+            -DCMAKE_EXE_LINKER_FLAGS='-sALLOW_MEMORY_GROWTH=1 -sFORCE_FILESYSTEM=1 --preload-file web-data/COSMO1.STN@/COSMO1.STN --preload-file web-data/COSMO1.VOL@/COSMO1.VOL' \
             -DCMAKE_SHARED_LINKER_FLAGS='-sALLOW_MEMORY_GROWTH=1'
 
       - name: Fix Emscripten C extension mode for SDL3
@@ -61,14 +73,8 @@ jobs:
           mkdir -p cosmo-web-build
           cp cosmo-build/cosmo1.js cosmo-web-build/cosmo1.js
           cp cosmo-build/cosmo1.wasm cosmo-web-build/cosmo1.wasm
+          cp cosmo-build/cosmo1.data cosmo-web-build/cosmo1.data
           cp cosmo-web/index.html cosmo-web-build/index.html
-          python3 - <<'PY'
-          import zipfile
-          with zipfile.ZipFile("games/cosmos-cosmic-adventure.jsdos") as z:
-              for name in ("COSMO/COSMO1.STN", "COSMO/COSMO1.VOL"):
-                  with z.open(name) as src, open("cosmo-web-build/" + name.rsplit("/", 1)[-1], "wb") as dst:
-                      dst.write(src.read())
-          PY
 
       - name: Upload browser test files
         uses: actions/upload-artifact@v4
