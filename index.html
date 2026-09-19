@@ -5,33 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mr. Le Claire's DOS Arcade</title>
 <style>
-:root{--green:#39ff72;--dim:#82ad8d;--panel:#071008;--line:#23833c;--yellow:#ffe66d;--white:#e9ffe9}
-*{box-sizing:border-box}body{margin:0;background:#000;color:var(--green);font-family:"Courier New",Courier,monospace;min-height:100vh}.container{width:min(1100px,94%);margin:auto}
-header{margin:18px auto 22px;padding:22px 18px;text-align:center;border:3px solid var(--green);background:var(--panel)}
-.logo{font-size:clamp(24px,5vw,48px);font-weight:bold;letter-spacing:2px}.subtitle{color:var(--yellow);font-size:15px;margin-top:8px}
-nav{border:2px solid var(--line);background:#050905;display:flex;justify-content:center;margin-bottom:22px}nav a{text-decoration:none;padding:10px 18px;color:var(--green);font-weight:bold}
-.section-title{border-bottom:2px solid var(--green);padding-bottom:8px;margin:22px 0 14px;font-size:20px}
-.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.card{padding:16px;background:#050a05;border:2px solid var(--line);display:flex;flex-direction:column;min-height:235px}
-.card-top{display:flex;justify-content:space-between}.slot{font-size:11px;color:var(--dim)}.tag{font-size:10px;background:#17361d;color:var(--green);padding:3px 6px}
-.pixel-icon{font-size:42px;line-height:1;margin:14px 0 9px}.title{font-size:17px;color:var(--white);font-weight:bold}.desc{font-size:12px;color:#aab9ad;line-height:1.4;margin:8px 0 14px;flex:1}
-.play{display:block;width:100%;padding:10px;border:2px solid var(--green);background:#0a1d0d;color:var(--green);font:inherit;font-weight:bold;text-decoration:none;text-align:center}.play:hover{background:var(--green);color:#001b07}
-.disabled{opacity:.45}.rules{border:2px solid var(--yellow);padding:15px;background:#0d0d05;color:#eeecc7}.rules h3{margin-top:0}
-.terminal{padding:14px;border:2px dashed var(--line);background:#050b05;line-height:1.5;color:var(--white)}.prompt{color:var(--yellow)}
-footer{text-align:center;color:#506454;font-size:11px;padding:25px 0 30px}
+:root{--green:#39ff72;--dim:#9ac5a2;--panel:#071008;--line:#23833c;--yellow:#ffe66d;--white:#e9ffe9}
+*{box-sizing:border-box}
+body{margin:0;background:#000;color:var(--green);font-family:"Courier New",Courier,monospace}
+.container{width:min(1050px,94%);margin:auto}
+header{margin:18px 0 20px;padding:20px 16px;text-align:center;border:3px solid var(--green);background:var(--panel)}
+.logo{font-size:clamp(24px,5vw,44px);font-weight:bold;letter-spacing:2px}
+.subtitle{color:var(--yellow);font-size:14px;margin-top:8px}
+.section-title{border-bottom:2px solid var(--green);padding-bottom:8px;margin:18px 0 12px;font-size:19px}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{padding:14px;background:#050a05;border:2px solid var(--line);display:flex;flex-direction:column;min-height:210px}
+.card-top{display:flex;justify-content:space-between}
+.slot{font-size:11px;color:var(--dim)}
+.tag{font-size:10px;background:#17361d;color:var(--green);padding:3px 6px}
+.pixel-icon{font-size:38px;line-height:1;margin:12px 0 8px}
+.title{font-size:16px;color:var(--white);font-weight:bold}
+.desc{font-size:12px;color:#aab9ad;line-height:1.4;margin:7px 0 12px;flex:1}
+.play{display:block;width:100%;padding:10px;border:2px solid var(--green);background:#0a1d0d;color:var(--green);font:inherit;font-weight:bold;text-decoration:none;text-align:center}
+.play:hover{background:var(--green);color:#001b07}
+.rules{border:2px solid var(--yellow);padding:12px;background:#0d0d05;color:#eeecc7;font-size:12px;line-height:1.45}
+.rules strong{color:var(--yellow)}
+footer{text-align:center;color:#506454;font-size:11px;padding:20px 0 24px}
 </style>
 </head>
 <body>
 <div class="container">
-<header><div class="logo">💾 MR. LE CLAIRE'S DOS ARCADE 💾</div><div class="subtitle">Classic computer games for learning, problem-solving, and responsible technology use.</div></header>
-<nav><a href="#games">[ GAMES ]</a><a href="#rules">[ RULES ]</a><a href="#about">[ ABOUT ]</a></nav>
-<section id="games"><div class="section-title">🕹️ &gt;&gt; SELECT A GAME</div><div class="games">
-<article class="card"><div class="card-top"><span class="slot">GAME 01</span><span class="tag">ARCADE</span></div><div class="pixel-icon">👽</div><div class="title">COSMO'S COSMIC ADVENTURE</div><div class="desc">Help Cosmo rescue his parents in this classic Apogee platform adventure.</div><a class="play" href="cosmo-web-v2/">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 02</span><span class="tag">ACTION</span></div><div class="pixel-icon">🐑</div><div class="title">SUPER 3-D NOAH'S ARK</div><div class="desc">A classic DOS-era 3-D game packaged for the browser.</div><a class="play" href="game.html?game=noah">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 03</span><span class="tag">ARCADE</span></div><div class="pixel-icon">💎</div><div class="title">DIGGER</div><div class="desc">A classic arcade-style DOS game running directly in your browser.</div><a class="play" href="digger-test.html">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 04</span><span class="tag">COMING SOON</span></div><div class="pixel-icon">🐂</div><div class="title">THE OREGON TRAIL</div><div class="desc">This game will be added to the arcade later.</div><span class="play disabled">COMING SOON</span></article>
-</div></section>
-<section id="rules"><div class="section-title">📜 &gt;&gt; ARCADE RULES</div><div class="rules"><h3>⚠ CLASSROOM MODE</h3><ol><li>Play only the games on this page.</li><li>Use the Chromebook appropriately and follow class directions.</li><li>If something unexpected or inappropriate appears, stop playing and tell Mr. Le Claire.</li><li>Keep food and drinks away from the computer.</li></ol></div></section>
-<section id="about"><div class="section-title">💿 &gt;&gt; ABOUT THIS ARCADE</div><div class="terminal"><div><span class="prompt">C:\LECLAIRE\ARCADE\README.TXT&gt;</span></div><p>This arcade was created by Mr. Le Claire for his technology classes.</p><p>Games are teacher-selected and launched directly from this website.</p></div></section>
+<header>
+<div class="logo">💾 MR. LE CLAIRE'S DOS ARCADE 💾</div>
+<div class="subtitle">Classic computer games for learning, problem-solving, and responsible technology use.</div>
+</header>
+
+<section id="games">
+<div class="section-title">🕹️ &gt;&gt; SELECT A GAME</div>
+<div class="games">
+
+<article class="card">
+<div class="card-top"><span class="slot">GAME 01</span><span class="tag">ARCADE</span></div>
+<div class="pixel-icon">👽</div>
+<div class="title">COSMO'S COSMIC ADVENTURE</div>
+<div class="desc">Help Cosmo rescue his parents in this classic Apogee platform adventure.</div>
+<a class="play" href="cosmo-web-v2/">▶ PLAY COSMO</a>
+</article>
+
+<article class="card">
+<div class="card-top"><span class="slot">GAME 02</span><span class="tag">ACTION</span></div>
+<div class="pixel-icon">🐑</div>
+<div class="title">SUPER 3-D NOAH'S ARK</div>
+<div class="desc">A classic DOS-era 3-D game packaged for the browser.</div>
+<a class="play" href="game.html?game=noah">▶ PLAY GAME</a>
+</article>
+
+<article class="card">
+<div class="card-top"><span class="slot">GAME 03</span><span class="tag">ARCADE</span></div>
+<div class="pixel-icon">💎</div>
+<div class="title">DIGGER</div>
+<div class="desc">A classic arcade-style DOS game running directly in your browser.</div>
+<a class="play" href="digger-test.html">▶ PLAY GAME</a>
+</article>
+
+<article class="card">
+<div class="card-top"><span class="slot">GAME 04</span><span class="tag">COMING SOON</span></div>
+<div class="pixel-icon">🐂</div>
+<div class="title">THE OREGON TRAIL</div>
+<div class="desc">This game will be added to the arcade later.</div>
+<span class="play" style="opacity:.45">COMING SOON</span>
+</article>
+
+</div>
+</section>
+
+<section>
+<div class="section-title">📜 &gt;&gt; CLASSROOM RULES</div>
+<div class="rules">
+<strong>⚠ CLASSROOM MODE:</strong>
+Play only the games on this page. Use the Chromebook appropriately and follow class directions.
+If something unexpected or inappropriate appears, stop playing and tell Mr. Le Claire.
+Keep food and drinks away from the computer.
+</div>
+</section>
+
 <footer>MR. LE CLAIRE'S TECHNOLOGY CLASS • HERITAGE CHRISTIAN SCHOOL</footer>
 </div>
 </body>
