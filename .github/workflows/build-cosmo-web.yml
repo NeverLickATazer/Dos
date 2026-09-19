@@ -1,4 +1,5 @@
 name: Build Cosmo Web
+# Browser edition v2
 
 on:
   workflow_dispatch:
