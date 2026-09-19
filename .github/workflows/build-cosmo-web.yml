@@ -79,18 +79,21 @@ jobs:
           cp cosmo-build/cosmo1.js cosmo-web-build/cosmo1.js
           cp cosmo-build/cosmo1.wasm cosmo-web-build/cosmo1.wasm
           cp cosmo-build/cosmo1.data cosmo-web-build/cosmo1.data
-          cp cosmo-web/index.html cosmo-web-build/index.html
+          cp cosmo-web-v2/index.html cosmo-web-build/index.html
+          cp coi-serviceworker.js cosmo-web-build/coi-serviceworker.js
 
       - name: Publish browser files to GitHub Pages
         shell: bash
         run: |
-          cp cosmo-web-build/cosmo1.js cosmo-web/cosmo1.js
-          cp cosmo-web-build/cosmo1.wasm cosmo-web/cosmo1.wasm
-          cp cosmo-web-build/cosmo1.data cosmo-web/cosmo1.data
+          mkdir -p cosmo-web-v2
+          cp cosmo-web-build/cosmo1.js cosmo-web-v2/cosmo1.js
+          cp cosmo-web-build/cosmo1.wasm cosmo-web-v2/cosmo1.wasm
+          cp cosmo-web-build/cosmo1.data cosmo-web-v2/cosmo1.data
+          cp cosmo-web-build/coi-serviceworker.js cosmo-web-v2/coi-serviceworker.js
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cosmo-web/cosmo1.js cosmo-web/cosmo1.wasm cosmo-web/cosmo1.data
-          git diff --cached --quiet || git commit -m "Publish Cosmo Web build"
+          git add cosmo-web-v2/cosmo1.js cosmo-web-v2/cosmo1.wasm cosmo-web-v2/cosmo1.data cosmo-web-v2/coi-serviceworker.js
+          git diff --cached --quiet || git commit -m "Publish Cosmo Web build to v2"
           git push
 
       - name: Upload browser test files
