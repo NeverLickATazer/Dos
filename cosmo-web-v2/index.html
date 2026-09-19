@@ -3,47 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cosmo's Cosmic Adventure — Browser Edition</title>
+<title>Cosmo's Cosmic Adventure</title>
 <script src="coi-serviceworker.js"></script>
 <style>
 html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-align:center;overflow:hidden}
-.wrap{max-width:1000px;margin:auto;padding:16px 12px 24px}
-h1{margin:0 0 6px;color:#7fd8ff;font-size:clamp(22px,4vw,32px)}
-p{color:#bbb;margin:6px 0}
-#status{min-height:24px;margin:8px 0}
+.wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;box-sizing:border-box}
 canvas{width:min(720px,92vw);height:auto;image-rendering:pixelated;background:#000;border:2px solid #444}
-.button{display:inline-block;margin-top:12px;padding:9px 14px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
+.button{display:inline-block;margin-top:10px;padding:9px 14px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
 </style>
 <script>
 document.addEventListener('keydown', function(e) {
   const keys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Enter','AltLeft','AltRight'];
-  if (keys.includes(e.code)) {
-    e.preventDefault();
-  }
+  if (keys.includes(e.code)) e.preventDefault();
 }, { passive: false });
 
 document.addEventListener('keyup', function(e) {
   const keys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Enter','AltLeft','AltRight'];
-  if (keys.includes(e.code)) {
-    e.preventDefault();
-  }
+  if (keys.includes(e.code)) e.preventDefault();
 }, { passive: false });
 </script>
 </head>
 <body>
 <div class="wrap">
-<h1>Cosmo's Cosmic Adventure</h1>
-<p>Browser Edition — native Cosmo engine compiled to WebAssembly.</p>
-<div id="status">Loading game engine…</div>
 <canvas id="canvas" width="960" height="600"></canvas>
-<br><a class="button" href="../index.html">← Back to DOS Arcade</a>
+<a class="button" href="../index.html">← Back to DOS Arcade</a>
 </div>
 <script>
-var statusEl=document.getElementById('status');
+var statusEl=document.createElement('div');
 var Module={
   canvas:document.getElementById('canvas'),
-  print:function(t){statusEl.textContent=t;},
-  printErr:function(t){statusEl.textContent='Engine error: '+t;}
+  print:function(t){},
+  printErr:function(t){console.error(t);}
 };
 </script>
 <script src="cosmo1.js"></script>
