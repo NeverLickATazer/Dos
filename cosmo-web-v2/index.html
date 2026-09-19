@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmo's Cosmic Adventure — Browser Edition</title>
+<style>
+html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-align:center}
+.wrap{max-width:1000px;margin:auto;padding:24px 16px 40px}
+h1{margin:0 0 8px;color:#7fd8ff}
+p{color:#bbb}
+#status{min-height:24px;margin:12px 0}
+canvas{width:min(960px,100%);height:auto;image-rendering:pixelated;background:#000;border:2px solid #444}
+.button{display:inline-block;margin-top:18px;padding:10px 16px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Cosmo's Cosmic Adventure</h1>
+<p>Browser Edition — native Cosmo engine compiled to WebAssembly.</p>
+<div id="status">Loading game engine…</div>
+<canvas id="canvas" width="960" height="600"></canvas>
+<br><a class="button" href="../index.html">← Back to DOS Arcade</a>
+</div>
+<script>
+var statusEl=document.getElementById('status');
+var Module={
+  canvas:document.getElementById('canvas'),
+  print:function(t){statusEl.textContent=t;},
+  printErr:function(t){statusEl.textContent='Engine error: '+t;}
+};
+</script>
+<script src="cosmo1.js"></script>
+</body>
+</html>
