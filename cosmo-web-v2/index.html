@@ -6,18 +6,25 @@
 <title>Cosmo's Cosmic Adventure — Browser Edition</title>
 <script src="coi-serviceworker.js"></script>
 <style>
-html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-align:center}
-.wrap{max-width:1000px;margin:auto;padding:24px 16px 40px}
-h1{margin:0 0 8px;color:#7fd8ff}
-p{color:#bbb}
-#status{min-height:24px;margin:12px 0}
-canvas{width:min(960px,100%);height:auto;image-rendering:pixelated;background:#000;border:2px solid #444}
-.button{display:inline-block;margin-top:18px;padding:10px 16px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
+html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-align:center;overflow:hidden}
+.wrap{max-width:1000px;margin:auto;padding:16px 12px 24px}
+h1{margin:0 0 6px;color:#7fd8ff;font-size:clamp(22px,4vw,32px)}
+p{color:#bbb;margin:6px 0}
+#status{min-height:24px;margin:8px 0}
+canvas{width:min(720px,92vw);height:auto;image-rendering:pixelated;background:#000;border:2px solid #444}
+.button{display:inline-block;margin-top:12px;padding:9px 14px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
 </style>
 <script>
 document.addEventListener('keydown', function(e) {
-  const keys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Enter'];
-  if (keys.includes(e.code) || keys.includes(e.key)) {
+  const keys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Enter','AltLeft','AltRight'];
+  if (keys.includes(e.code)) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+document.addEventListener('keyup', function(e) {
+  const keys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Enter','AltLeft','AltRight'];
+  if (keys.includes(e.code)) {
     e.preventDefault();
   }
 }, { passive: false });
