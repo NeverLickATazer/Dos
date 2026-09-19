@@ -14,6 +14,14 @@ p{color:#bbb}
 canvas{width:min(960px,100%);height:auto;image-rendering:pixelated;background:#000;border:2px solid #444}
 .button{display:inline-block;margin-top:18px;padding:10px 16px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
 </style>
+<script>
+document.addEventListener('keydown', function(e) {
+  const keys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','Enter'];
+  if (keys.includes(e.code) || keys.includes(e.key)) {
+    e.preventDefault();
+  }
+}, { passive: false });
+</script>
 </head>
 <body>
 <div class="wrap">
