@@ -27,23 +27,7 @@ var statusEl=document.getElementById('status');
 var Module={
   canvas:document.getElementById('canvas'),
   print:function(t){statusEl.textContent=t;},
-  printErr:function(t){statusEl.textContent=t;},
-  preRun:[function(){
-    Module.addRunDependency('cosmo-data');
-    Promise.all(['COSMO1.STN','COSMO1.VOL'].map(function(name){
-      return fetch(name).then(function(r){
-        if(!r.ok) throw new Error('Could not load '+name);
-        return r.arrayBuffer();
-      }).then(function(buf){
-        FS_createDataFile('/',name,new Uint8Array(buf),true,true,true);
-      });
-    })).then(function(){
-      Module.removeRunDependency('cosmo-data');
-      statusEl.textContent='Starting Cosmo…';
-    }).catch(function(err){
-      statusEl.textContent='Could not load Cosmo game data: '+err;
-    });
-  }]
+  printErr:function(t){statusEl.textContent=t;}
 };
 </script>
 <script src="cosmo1.js"></script>
