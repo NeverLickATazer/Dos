@@ -8,41 +8,58 @@
 <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
-html,body{margin:0;min-height:100%;background:#000;color:#39ff72;font-family:"Courier New",monospace}
-body{padding:20px;box-sizing:border-box}.wrap{max-width:1000px;margin:auto}
-h1{border:3px solid #39ff72;padding:15px;text-align:center;background:#071008}
-.status{padding:10px;border:1px solid #23833c;margin:12px 0;color:#ffe66d}
-.player{width:100%;height:min(70vh,650px);min-height:400px;border:2px solid #23833c;background:#000}a{color:#39ff72}
+html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-align:center;overflow:hidden}
+.wrap{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;box-sizing:border-box;gap:6px}
+.player{width:min(960px,96vw);height:min(88vh,720px);background:#000;border:2px solid #444}
+.button{display:inline-block;padding:9px 14px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1 id="title">💾 DOS ARCADE 💾</h1>
-<div id="status" class="status">Starting game...</div>
 <div id="player" class="player"></div>
-<p><a href="index.html">← Back to Mr. Le Claire's DOS Arcade</a></p>
+<a class="button" href="index.html">← Back to DOS Arcade</a>
 </div>
 <script>
 const params=new URLSearchParams(location.search);
 const game=params.get('game');
 const games={
- cosmo:{title:"👽 COSMO'S COSMIC ADVENTURE",url:"games/cosmos-cosmic-adventure.jsdos"},
- noah:{title:"🐑 SUPER 3-D NOAH'S ARK",url:"games/noahs-ark.jsdos"},
- chex:{title:"🥣 CHEX QUEST",url:"games/chex-quest.jsdos"}
+ cosmo:{title:"Cosmo's Cosmic Adventure",url:"games/cosmos-cosmic-adventure.jsdos"},
+ noah:{title:"Super 3-D Noah's Ark",url:"games/noahs-ark.jsdos"},
+ chex:{title:"Chex Quest",url:"games/chex-quest.jsdos"}
 };
 const selected=games[game];
-const title=document.getElementById('title');
-const status=document.getElementById('status');
 const player=document.getElementById('player');
 
 async function startGame(){
- if(!selected){title.textContent='GAME NOT FOUND';status.textContent='No valid game was selected.';return;}
- title.textContent=selected.title;
+ if(!selected){
+  player.innerHTML='<div style="padding:30px;color:#fff">Game not found.</div>';
+  return;
+ }
  try{
   if(typeof window.Dos!=='function')throw new Error('js-dos did not load.');
+
+  if(game==='cosmo'){
+   return;
+  }
+
+  if(typeof JSZip!=='function')throw new Error('ZIP library did not load.');
+  const response=await fetch(selected.url);
+  if(!response.ok)throw new Error('Could not load the game file.');
+  const zip=await JSZip.loadAsync(await response.arrayBuffer());
+  const initFs=[];
+
+  for(const name of Object.keys(zip.files)){
+   const entry=zip.files[name];
+   if(entry.dir || name.startsWith('.jsdos/')) continue;
+   initFs.push({
+    path:name,
+    contents:await entry.async('uint8array')
+   });
+  }
+
+  let config;
   if(game==='noah'){
-   status.textContent='Starting Noah with DOSBox compatibility settings...';
-   const noahConfig=`[sdl]
+   config=`[sdl]
 autolock=false
 
 [dosbox]
@@ -68,33 +85,46 @@ frameskip=0
 
 [autoexec]
 SET BLASTER=A220 I7 D1 H5 T6
+mount c .
+c:
 NOAH3DOS.EXE
 `;
-   Dos(player,{url:selected.url,dosboxConf:noahConfig,autoStart:true,
-     onEvent:(e)=>status.textContent='js-dos: '+e,
-     onerror:(e)=>status.textContent='NOAH ERROR: '+e});
-   return;
+  }else{
+   config=`[sdl]
+autolock=false
+
+[dosbox]
+machine=svga_s3
+memsize=16
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[cpu]
+core=normal
+cycles=auto
+
+[render]
+aspect=true
+
+[autoexec]
+mount c .
+c:
+`;
   }
-  if(game!=='cosmo'){
-   Dos(player,{url:selected.url,autoStart:true,onEvent:(e)=>status.textContent='js-dos: '+e,
-     onerror:(e)=>status.textContent='GAME ERROR: '+e});
-   return;
-  }
-  status.textContent='Preparing Cosmo...';
-  if(typeof JSZip!=='function')throw new Error('ZIP library did not load.');
-  const response=await fetch(selected.url);
-  if(!response.ok)throw new Error('Could not load the Cosmo game file.');
-  const zip=await JSZip.loadAsync(await response.arrayBuffer());
-  const initFs=[];
-  for(const name of Object.keys(zip.files)){
-   const entry=zip.files[name];
-   if(entry.dir||name.startsWith('.jsdos/'))continue;
-   initFs.push({path:name,contents:await entry.async('uint8array')});
-  }
-  const config=`[sdl]\nautolock=false\n\n[dosbox]\nmachine=svga_s3\n\n[dos]\nxms=false\nems=false\numb=true\nkeyboardlayout=auto\n\n[cpu]\ncore=normal\ncycles=fixed 3000\ncycleup=500\ncycledown=500\n\n[render]\naspect=true\nscaler=none\nframeskip=0\n\n[autoexec]\nmount c .\nc:\ncd COSMO\nloadfix -25\nCOSMO1.EXE\n`;
-  status.textContent='Starting Cosmo with compatibility settings...';
-  Dos(player,{dosboxConf:config,initFs:initFs,autoStart:true,onEvent:(e)=>status.textContent='js-dos: '+e});
- }catch(error){status.textContent='ERROR: '+(error.message||error);console.error(error);}
+
+  Dos(player,{
+   dosboxConf:config,
+   initFs:initFs,
+   autoStart:true
+  });
+ }catch(error){
+  player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(error.message||error)+'</div>';
+  console.error(error);
+ }
 }
 startGame();
 </script>
