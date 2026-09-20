@@ -1,0 +1,29 @@
+name: Inspect Noah Bundle
+
+on:
+  push:
+    paths:
+      - ".github/workflows/inspect-noah.yml"
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect Noah bundle
+        shell: bash
+        run: |
+          set -e
+          echo "=== ZIP LIST ==="
+          unzip -l games/noahs-ark.jsdos
+          mkdir -p /tmp/noah
+          unzip -o games/noahs-ark.jsdos -d /tmp/noah >/dev/null
+          echo "=== FILES ==="
+          find /tmp/noah -type f -printf '%P\n' | sort
+          echo "=== DOSBOX CONFIG ==="
+          cat /tmp/noah/.jsdos/dosbox.conf || true
+          echo "=== JSDOS JSON ==="
+          cat /tmp/noah/.jsdos/jsdos.json || true
+          echo "=== EXE STRINGS ==="
+          strings /tmp/noah/noah3dos.exe | grep -Ei 'noah|3d|version|memory|error|sound|vga|wolf' | head -80 || true
