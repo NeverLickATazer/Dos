@@ -57,9 +57,12 @@ async function startGame(){
    });
   }
 
-  let config;
-  if(game==='noah'){
-   config=`[sdl]
+  if(game!=='noah'){
+   Dos(player,{url:selected.url,autoStart:true});
+   return;
+  }
+
+  const config=`[sdl]
 autolock=false
 
 [dosbox]
@@ -89,32 +92,6 @@ mount c .
 c:
 NOAH3DOS.EXE
 `;
-  }else{
-   config=`[sdl]
-autolock=false
-
-[dosbox]
-machine=svga_s3
-memsize=16
-
-[dos]
-xms=true
-ems=true
-umb=true
-keyboardlayout=auto
-
-[cpu]
-core=normal
-cycles=auto
-
-[render]
-aspect=true
-
-[autoexec]
-mount c .
-c:
-`;
-  }
 
   Dos(player,{
    dosboxConf:config,
