@@ -1,0 +1,143 @@
+=== ZIP FILES ===
+Archive:  games/noahs-ark.jsdos
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+   235451  2026-09-15 14:42   vgagraph.n3d
+   448468  2026-09-15 14:42   noah3dos.exe
+      405  2026-09-15 14:42   vgahead.n3d
+    60195  2026-09-15 14:42   gamemaps.n3d
+    45043  2026-09-15 14:42   audiot.n3d
+  1048708  2026-09-15 14:42   vswap.n3d
+      402  2026-09-15 14:42   maphead.n3d
+     1024  2026-09-15 14:42   vgadict.n3d
+      576  2026-09-15 14:42   audiohed.n3d
+      196  2026-09-15 14:42   .jsdos/dosbox.conf
+       15  2026-09-15 14:42   .jsdos/jsdos.json
+---------                     -------
+  1840483                     11 files
+
+=== DOSBOX CONFIG ===
+[sdl]
+autolock=false
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[cpu]
+cycles=auto
+cycleup=500
+cycledown=500
+
+[render]
+aspect=true
+
+[autoexec]
+SET BLASTER=A220 I7 D1 H5 T6
+NOAH3DOS.EXE
+
+=== JSDOS JSON ===
+{"version":"8"}
+=== EXE STRINGS ===
+!+"Who was Noah's father?
+How old was Noah when he had
+How many sons did Noah have?
+animal did Noah have on
+did Noah have on the Ark?
+How old was Noah when the
+How many days did Noah wait
+Noah collected the animals and
+to Noah?
+How many days did Noah stay
+Noah did after he got out of
+How old was Noah when he
+Noah
+Noah was the only man to find
+What did Noah do after the
+Who was Noah's oldest son?
+Noah to pitch the Ark?
+What did God make with Noah,
+so that Noah knew that he
+things did God tell Noah to
+Why did God choose Noah to be
+Noah was righteous.
+Noah was a good sailor.
+Noah could swim.
+Noah entered the Ark early to
+How many months did Noah wait
+Noah
+What did Noah offer to God as
+Noah?
+Which of Noah's ancestors lived
+Noah is mentioned at least 3
+Which of Noah's descendants
+Which of Noah's
+Noah is a descendent of
+Why is Noah mentioned in
+Noah took his wife, sons,
+What title is Noah given
+By the time of Noah, how did
+Noah.
+What was Noah commanded
+Noah
+Noah and his sons
+Noah, his sons and every
+which son of Noah?
+Which of Noah's descendants
+cover up Noah with a
+Noah was naked
+Noah was cold
+Noah was burning from
+God promised that Noah and
+Noah had to gather and store
+The Bible says that Noah's
+After the flood, Noah did not
+Noah?
+Which person lived after Noah?
+Noah did everything that God
+After Noah, with whom did God
+make with Noah?
+God told Noah to make windows
+It took Noah 40 days to find
+Noah look out of the Ark and
+In Noah's curse he said
+How many years did Noah
+Which of Noah's sons was
+What did Noah plant after
+to Noah?
+How many times did Noah
+he had Noah?
+Sound
+AdLib/Sound Blaster
+Sound Blaster
+AdLib/Sound Blaster
+Divide error
+SUPER 3D NOAH'S ARK (v1.0)
+Error in _dos_getdiskfree call
+GNoah Tunes
+FatalError: DemoLoop() exited!
+*.N3D
+days, Noah. Unfortunately, the
+Wow, Noah! Carl sure was hard to
+Oh, and Noah, remember to keep
+ZZZZZ... Great job, Noah!. Ginny is
+You're doing a great job, Noah!
+Super 3-D Noah's Ark
+Memory Usage
+ (Sound Info)
+ (Sound)
+ Number of sounds: 
+ Sound #
+VGAHEAD.
+VGAGRAPH.
+VGADICT.
+Loading sound headers...
+?MM_GetPtr: Out of memory!
+MM_ShowMemory: Memory block order currupted!
+PML_ShutdownEMS: Error freeing EMS
+PML_XMSCopy: Error on copy
+PML_ShutdownXMS: Error freeing XMS
+PM_StartupMainMem(): Not enough main memory (need %d more pages)!
+Main memory (%lukb)
