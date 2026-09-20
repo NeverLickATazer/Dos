@@ -57,16 +57,11 @@ async function startGame(){
    });
   }
 
-  if(game!=='noah'){
-   Dos(player,{url:selected.url,autoStart:true});
-   return;
-  }
-
-  const config=`[sdl]
+  const config=game==='noah'?`[sdl]
 autolock=false
 
 [dosbox]
-machine=svga_s3
+machine=vgaonly
 memsize=16
 
 [dos]
@@ -83,7 +78,7 @@ cycledown=500
 
 [render]
 aspect=true
-scaler=none
+scaler=normal2x
 frameskip=0
 
 [autoexec]
@@ -91,8 +86,36 @@ SET BLASTER=A220 I7 D1 H5 T6
 mount c .
 c:
 NOAH3DOS.EXE
-`;
+`:`[sdl]
+autolock=false
 
+[dosbox]
+machine=svga_s3
+memsize=16
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[cpu]
+core=normal
+cycles=fixed 10000
+cycleup=500
+cycledown=500
+
+[render]
+aspect=true
+scaler=normal2x
+frameskip=0
+
+[autoexec]
+mount c .
+c:
+CHEX.EXE
+`;
+ 
   Dos(player,{
    dosboxConf:config,
    initFs:initFs,
