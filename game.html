@@ -40,8 +40,44 @@ async function startGame(){
  title.textContent=selected.title;
  try{
   if(typeof window.Dos!=='function')throw new Error('js-dos did not load.');
+  if(game==='noah'){
+   status.textContent='Starting Noah with DOSBox compatibility settings...';
+   const noahConfig=`[sdl]
+autolock=false
+
+[dosbox]
+machine=svga_s3
+memsize=16
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[cpu]
+core=normal
+cycles=fixed 12000
+cycleup=500
+cycledown=500
+
+[render]
+aspect=true
+scaler=none
+frameskip=0
+
+[autoexec]
+SET BLASTER=A220 I7 D1 H5 T6
+NOAH3DOS.EXE
+`;
+   Dos(player,{url:selected.url,dosboxConf:noahConfig,autoStart:true,
+     onEvent:(e)=>status.textContent='js-dos: '+e,
+     onerror:(e)=>status.textContent='NOAH ERROR: '+e});
+   return;
+  }
   if(game!=='cosmo'){
-   Dos(player,{url:selected.url,autoStart:true,onEvent:(e)=>status.textContent='js-dos: '+e});
+   Dos(player,{url:selected.url,autoStart:true,onEvent:(e)=>status.textContent='js-dos: '+e,
+     onerror:(e)=>status.textContent='GAME ERROR: '+e});
    return;
   }
   status.textContent='Preparing Cosmo...';
