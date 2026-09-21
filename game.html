@@ -116,7 +116,16 @@ CHEX.EXE
    throw new Error('Unsupported game.');
   }
 
-  const instance=Dos(player,{dosboxConf:config,initFs:initFs,backend:'dosbox',backendLocked:true,workerThread:false,offscreenCanvas:false,renderBackend:'canvas',autoStart:true});
+  const instance=Dos(player,{
+   dosboxConf:config,
+   initFs:initFs,
+   backend:game==='chex'?'dosboxX':'dosbox',
+   backendLocked:true,
+   workerThread:true,
+   offscreenCanvas:false,
+   renderBackend:'canvas',
+   autoStart:true
+  });
   window.currentDosInstance=instance;
  }catch(error){
   player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(error.message||error)+'</div>';
