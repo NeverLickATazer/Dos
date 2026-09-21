@@ -47,10 +47,7 @@ async function startGame(){
   for(const name of Object.keys(zip.files)){
    const entry=zip.files[name];
    if(entry.dir || name.startsWith('.jsdos/')) continue;
-   initFs.push({
-    path:name,
-    contents:await entry.async('uint8array')
-   });
+   initFs.push({path:name,contents:await entry.async('uint8array')});
   }
 
   let config;
@@ -59,7 +56,7 @@ async function startGame(){
 autolock=false
 
 [dosbox]
-machine=svga_s3
+machine=vgaonly
 memsize=16
 
 [dos]
@@ -70,12 +67,12 @@ keyboardlayout=auto
 
 [cpu]
 core=normal
-cycles=fixed 12000
+cycles=auto
 cycleup=500
 cycledown=500
 
 [render]
-aspect=true
+aspect=false
 scaler=normal2x
 frameskip=0
 
@@ -91,17 +88,17 @@ autolock=false
 
 [dosbox]
 machine=svga_s3
-memsize=16
+memsize=4
 
 [dos]
-xms=true
-ems=true
-umb=true
+xms=false
+ems=false
+umb=false
 keyboardlayout=auto
 
 [cpu]
 core=normal
-cycles=fixed 8000
+cycles=auto
 cycleup=500
 cycledown=500
 
@@ -119,13 +116,7 @@ CHEX.EXE
    throw new Error('Unsupported game.');
   }
 
-  const instance=Dos(player,{
-   dosboxConf:config,
-   initFs:initFs,
-   backend:'dosbox',
-   backendLocked:true,
-   autoStart:true
-  });
+  const instance=Dos(player,{dosboxConf:config,initFs:initFs,backend:'dosbox',backendLocked:true,autoStart:true});
   window.currentDosInstance=instance;
  }catch(error){
   player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(error.message||error)+'</div>';
