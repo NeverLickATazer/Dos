@@ -42,41 +42,90 @@ async function startGame(){
   const response=await fetch(selected.url);
   if(!response.ok)throw new Error('Could not load the game file.');
   const zip=await JSZip.loadAsync(await response.arrayBuffer());
+  const initFs=[];
 
-  const confFile=zip.file('.jsdos/dosbox.conf');
-  if(!confFile)throw new Error('The game bundle is missing its DOSBox configuration.');
-
-  let conf=await confFile.async('string');
-
-  if(game==='noah'){
-   conf=conf
-    .replace(/machine=[^\n]*/i,'machine=svga_s3')
-    .replace(/memsize=[^\n]*/i,'memsize=16')
-    .replace(/core=[^\n]*/i,'core=auto')
-    .replace(/cycles=[^\n]*/i,'cycles=auto')
-    .replace(/scaler=[^\n]*/i,'scaler=normal2x');
+  for(const name of Object.keys(zip.files)){
+   const entry=zip.files[name];
+   if(entry.dir || name.startsWith('.jsdos/')) continue;
+   initFs.push({
+    path:name,
+    contents:await entry.async('uint8array')
+   });
   }
 
-  zip.file('.jsdos/dosbox.conf',conf);
+  let config;
+  if(game==='noah'){
+   config=`[sdl]
+autolock=false
 
-  const bundleBlob=await zip.generateAsync({
-   type:'blob',
-   compression:'DEFLATE',
-   compressionOptions:{level:6}
+[dosbox]
+machine=svga_s3
+memsize=16
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[cpu]
+core=normal
+cycles=fixed 12000
+cycleup=500
+cycledown=500
+
+[render]
+aspect=true
+scaler=normal2x
+frameskip=0
+
+[autoexec]
+SET BLASTER=A220 I7 D1 H5 T6
+mount c .
+c:
+NOAH3DOS.EXE
+`;
+  } else if(game==='chex'){
+   config=`[sdl]
+autolock=false
+
+[dosbox]
+machine=svga_s3
+memsize=16
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[cpu]
+core=normal
+cycles=fixed 8000
+cycleup=500
+cycledown=500
+
+[render]
+aspect=true
+scaler=normal2x
+frameskip=0
+
+[autoexec]
+mount c .
+c:
+CHEX.EXE
+`;
+  } else {
+   throw new Error('Unsupported game.');
+  }
+
+  const instance=Dos(player,{
+   dosboxConf:config,
+   initFs:initFs,
+   backend:'dosbox',
+   backendLocked:true,
+   autoStart:true
   });
-  const bundleUrl=URL.createObjectURL(bundleBlob);
-
-  const options={url:bundleUrl,autoStart:true};
-  if(game==='noah'){
-   options.backend='dosboxX';
-   options.backendLocked=true;
-  }
-  if(game==='chex'){
-   options.backend='dosbox';
-   options.backendLocked=true;
-  }
-
-  const instance=Dos(player,options);
   window.currentDosInstance=instance;
  }catch(error){
   player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(error.message||error)+'</div>';
