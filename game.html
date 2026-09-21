@@ -112,6 +112,39 @@ mount c .
 c:
 CHEX.EXE
 `;
+  } else if(game==='mario'){
+   config=`[sdl]
+autolock=false
+
+[dosbox]
+machine=svga_s3
+memsize=16
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[cpu]
+core=normal
+cycles=auto
+
+[render]
+aspect=true
+scaler=normal2x
+
+[autoexec]
+mount c .
+c:
+IF EXIST MARIOL\\MARIO.EXE GOTO PLAY
+INSTALLM 1
+GOTO DONE
+:PLAY
+CD MARIOL
+MARIO.EXE
+:DONE
+`;
   } else {
    throw new Error('Unsupported game.');
   }
@@ -124,7 +157,8 @@ CHEX.EXE
    workerThread:true,
    offscreenCanvas:false,
    renderBackend:'canvas',
-   autoStart:true
+   autoStart:true,
+   fsChanges:{local:true}
   });
   window.currentDosInstance=instance;
  }catch(error){
