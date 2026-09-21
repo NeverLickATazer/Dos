@@ -87,18 +87,18 @@ NOAH3DOS.EXE
 autolock=false
 
 [dosbox]
-machine=vgaonly
-memsize=2
+machine=svga_s3
+memsize=16
 
 [dos]
-xms=false
-ems=false
-umb=false
+xms=true
+ems=true
+umb=true
 keyboardlayout=auto
 
 [cpu]
 core=normal
-cycles=3000
+cycles=auto
 cycleup=500
 cycledown=500
 
@@ -116,7 +116,7 @@ CHEX.EXE
    throw new Error('Unsupported game.');
   }
 
-  const instance=Dos(player,{dosboxConf:config,initFs:initFs,backend:'dosbox',backendLocked:true,autoStart:true});
+  const instance=Dos(player,{dosboxConf:config,initFs:initFs,backend:'dosbox',backendLocked:true,workerThread:false,offscreenCanvas:false,renderBackend:'canvas',autoStart:true});
   window.currentDosInstance=instance;
  }catch(error){
   player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(error.message||error)+'</div>';
