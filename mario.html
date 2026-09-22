@@ -6,7 +6,6 @@
 <title>Mr. Le Claire's DOS Arcade - Mario's Early Years</title>
 <link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
 <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
 html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-align:center;overflow:hidden}
 .wrap{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;box-sizing:border-box;gap:6px}
@@ -15,57 +14,28 @@ html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-
 </style>
 </head>
 <body>
-<div class="wrap"><div id="player" class="player"></div><a class="button" href="index.html">← Back to DOS Arcade</a></div>
+<div class="wrap">
+  <div id="player" class="player"></div>
+  <a class="button" href="index.html">← Back to DOS Arcade</a>
+</div>
 <script>
-(async()=>{
- const player=document.getElementById("player");
- try{
-  const response=await fetch("games/mario-letters.jsdos");
-  if(!response.ok)throw new Error("Mario game file could not be loaded.");
-  const zip=await JSZip.loadAsync(await response.arrayBuffer());
-  const initFs=[];
-  for(const name of Object.keys(zip.files)){
-   const entry=zip.files[name];
-   if(entry.dir||name.startsWith(".jsdos/"))continue;
-   initFs.push({path:name,contents:await entry.async("uint8array")});
-  }
-  const config=`[sdl]
-autolock=false
-
-[dosbox]
-machine=svga_s3
-memsize=16
-
-[dos]
-xms=true
-ems=true
-umb=true
-keyboardlayout=auto
-
-[cpu]
-core=normal
-cycles=auto
-
-[render]
-aspect=true
-scaler=normal2x
-frameskip=0
-
-[autoexec]
-mount c .
-c:
-IF EXIST MARIOL\\MARIO.EXE GOTO PLAY
-INSTALLM 1
-IF EXIST MARIOL\\MARIO.EXE GOTO PLAY
-GOTO DONE
-:PLAY
-CD MARIOL
-MARIO.EXE
-:DONE
-`;
-  Dos(player,{dosboxConf:config,initFs,backend:"dosbox",backendLocked:true,workerThread:true,offscreenCanvas:false,renderBackend:"canvas",autoStart:true,fsChanges:{local:true}});
- }catch(e){player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(e.message||e)+'</div>';console.error(e)}
-})();
+const player=document.getElementById("player");
+try{
+  if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
+  Dos(player,{
+    url:"games/mario-letters.jsdos",
+    backend:"dosbox",
+    backendLocked:true,
+    workerThread:true,
+    offscreenCanvas:false,
+    renderBackend:"canvas",
+    autoStart:true,
+    fsChanges:{local:true}
+  });
+}catch(e){
+  player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(e.message||e)+'</div>';
+  console.error(e);
+}
 </script>
 </body>
 </html>
