@@ -24,9 +24,9 @@ try{
   if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
   Dos(player,{
     url:"games/mario-letters.jsdos",
-    backend:"dosbox",
+    backend:"dosboxX",
     backendLocked:true,
-    workerThread:true,
+    workerThread:false,
     offscreenCanvas:false,
     renderBackend:"canvas",
     autoStart:true,
