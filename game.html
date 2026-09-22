@@ -25,7 +25,8 @@ const game=params.get('game');
 const games={
  cosmo:{title:"Cosmo's Cosmic Adventure",url:"games/cosmos-cosmic-adventure.jsdos"},
  noah:{title:"Super 3-D Noah's Ark",url:"games/noahs-ark.jsdos"},
- chex:{title:"Chex Quest",url:"games/chex-quest.jsdos"}
+ chex:{title:"Chex Quest",url:"games/chex-quest.jsdos"},
+ mario:{title:"Mario's Early Years! Fun With Letters",url:"games/mario-letters.jsdos"}
 };
 const selected=games[game];
 const player=document.getElementById('player');
@@ -133,12 +134,14 @@ cycles=auto
 [render]
 aspect=true
 scaler=normal2x
+frameskip=0
 
 [autoexec]
 mount c .
 c:
 IF EXIST MARIOL\\MARIO.EXE GOTO PLAY
 INSTALLM 1
+IF EXIST MARIOL\\MARIO.EXE GOTO PLAY
 GOTO DONE
 :PLAY
 CD MARIOL
