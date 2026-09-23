@@ -5,70 +5,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mr. Le Claire's DOS Arcade</title>
 <style>
-:root{--green:#39ff72;--dim:#8fb99a;--panel:#071008;--line:#236d38;--yellow:#ffe66d;--white:#effff1;--blue:#61c7ff;--red:#ff6b7a}
+:root{--green:#39ff72;--dim:#8fb99a;--line:#236d38;--yellow:#ffe66d;--white:#effff1;--blue:#61c7ff;--cyan:#47f6ff}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(circle at top,#102518 0,#030604 42%,#000 100%);color:var(--green);font-family:"Courier New",Courier,monospace;min-height:100vh}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(57,255,114,.025) 4px);z-index:5}
-.container{width:min(1120px,92%);margin:auto;padding:24px 0}
-header{position:relative;overflow:hidden;margin:0 0 26px;padding:30px 22px;text-align:center;border:2px solid var(--green);background:linear-gradient(135deg,#0b1d10,#030703);box-shadow:0 0 0 5px #061009,0 0 28px rgba(57,255,114,.12)}
-header:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
-.kicker{font-size:12px;letter-spacing:3px;color:var(--blue);margin-bottom:12px}
-.logo{font-size:clamp(25px,5vw,48px);font-weight:bold;letter-spacing:2px;text-shadow:3px 3px 0 #123d1d}
-.subtitle{max-width:700px;margin:14px auto 0;color:var(--yellow);font-size:14px;line-height:1.5}
-.status{display:inline-flex;gap:10px;align-items:center;margin-top:18px;padding:7px 12px;border:1px solid var(--line);background:#020602;color:var(--dim);font-size:11px}
-.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
-.section-title{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--green);padding-bottom:9px;margin:26px 0 14px;font-size:19px;color:var(--white)}
+body{margin:0;background:#010301;color:var(--green);font-family:"Courier New",Courier,monospace;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(57,255,114,.025) 0,rgba(57,255,114,.025) 1px,transparent 1px,transparent 4px);z-index:20;mix-blend-mode:screen}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.62) 100%);z-index:21}
+.container{width:min(1160px,93%);margin:auto;padding:28px 0;position:relative;z-index:2}
+header{position:relative;overflow:hidden;margin:0 0 30px;padding:34px 24px;text-align:center;border:2px solid var(--green);background:linear-gradient(145deg,#0b1d10,#020602 70%);box-shadow:0 0 0 5px #061009,0 0 35px rgba(57,255,114,.15),inset 0 0 35px rgba(57,255,114,.04)}
+header:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(71,246,255,.05) 50%,transparent 65%);transform:translateX(-100%);animation:scan 7s linear infinite}
+header:after{content:"";position:absolute;left:5%;right:5%;bottom:0;height:4px;background:linear-gradient(90deg,transparent,var(--green),var(--cyan),var(--green),transparent);box-shadow:0 0 12px var(--green)}
+@keyframes scan{to{transform:translateX(100%)}}
+.kicker{font-size:11px;letter-spacing:4px;color:var(--blue);margin-bottom:14px}
+.logo{font-size:clamp(26px,5vw,50px);font-weight:bold;letter-spacing:2px;color:var(--white);text-shadow:0 0 8px rgba(57,255,114,.45),3px 3px 0 #123d1d}
+.subtitle{max-width:720px;margin:14px auto 0;color:var(--yellow);font-size:14px;line-height:1.5}
+.status{display:inline-flex;gap:10px;align-items:center;margin-top:20px;padding:8px 14px;border:1px solid #285b34;background:#020602;color:var(--dim);font-size:11px;box-shadow:inset 0 0 12px rgba(57,255,114,.05)}
+.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:blink 1.7s infinite}
+@keyframes blink{50%{opacity:.35}}
+.section-title{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--green);padding-bottom:10px;margin:28px 0 15px;font-size:19px;color:var(--white);text-shadow:0 0 7px rgba(57,255,114,.2)}
 .section-title span{color:var(--green)}
-.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:16px}
-.card{position:relative;padding:17px;background:linear-gradient(160deg,#0a140b,#030703);border:1px solid var(--line);display:flex;flex-direction:column;min-height:255px;transition:transform .15s,border-color .15s,box-shadow .15s}
-.card:before{content:"";position:absolute;top:0;left:0;width:35px;height:3px;background:var(--blue)}
-.card:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 8px 24px rgba(0,0,0,.45),0 0 18px rgba(57,255,114,.08)}
-.card-top{display:flex;justify-content:space-between;gap:8px}
-.slot{font-size:11px;color:var(--dim)}
-.tag{font-size:10px;background:#17361d;color:var(--green);padding:4px 7px;border:1px solid #285b34}
-.pixel-icon{font-size:48px;line-height:1;margin:20px 0 13px;filter:drop-shadow(0 0 8px rgba(57,255,114,.12))}
-.title{font-size:17px;color:var(--white);font-weight:bold;line-height:1.25}
-.desc{font-size:12px;color:#aab9ad;line-height:1.5;margin:9px 0 16px;flex:1}
-.play{display:block;width:100%;padding:11px;border:2px solid var(--green);background:#0a1d0d;color:var(--green);font:inherit;font-weight:bold;text-decoration:none;text-align:center;cursor:pointer}
-.play:hover{background:var(--green);color:#001b07}
-.coming{border-color:#665f2c;color:#ffe66d;background:#211e08;opacity:.7}
-.rules{border:1px solid #8d7c2b;padding:16px;background:linear-gradient(135deg,#171504,#0b0b03);color:#eeecc7;font-size:12px;line-height:1.65}
-.rules strong{color:var(--yellow)}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:17px}
+.card{position:relative;overflow:hidden;padding:18px;background:linear-gradient(145deg,#0a160c,#020502 80%);border:1px solid #1f6534;display:flex;flex-direction:column;min-height:270px;transition:transform .18s,border-color .18s,box-shadow .18s}
+.card:before{content:"";position:absolute;top:0;left:0;width:52px;height:3px;background:var(--blue);box-shadow:0 0 9px var(--blue)}
+.card:after{content:"";position:absolute;right:-30px;bottom:-35px;width:90px;height:90px;border:1px solid rgba(57,255,114,.08);transform:rotate(45deg)}
+.card:hover{transform:translateY(-6px) scale(1.01);border-color:var(--green);box-shadow:0 10px 28px rgba(0,0,0,.55),0 0 22px rgba(57,255,114,.12)}
+.card:hover .pixel-icon{transform:scale(1.08);text-shadow:0 0 15px rgba(57,255,114,.4)}
+.card-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.slot{font-size:10px;color:#547d60;letter-spacing:1px}
+.tag{font-size:9px;background:#102c17;color:var(--green);padding:4px 7px;border:1px solid #285b34;letter-spacing:1px}
+.pixel-icon{font-size:48px;line-height:1;margin:22px 0 14px;transition:transform .18s}
+.title{font-size:17px;color:var(--white);font-weight:bold;line-height:1.25;text-shadow:0 0 5px rgba(255,255,255,.08)}
+.desc{font-size:12px;color:#9db0a2;line-height:1.5;margin:9px 0 17px;flex:1}
+.play{display:block;width:100%;padding:11px;border:2px solid var(--green);background:#061609;color:var(--green);font:inherit;font-weight:bold;text-decoration:none;text-align:center;cursor:pointer;letter-spacing:1px;transition:.15s}
+.play:hover{background:var(--green);color:#001b07;box-shadow:0 0 18px rgba(57,255,114,.35)}
+.rules{border:1px solid #8d7c2b;padding:17px;background:linear-gradient(135deg,#171504,#090903);color:#eeecc7;font-size:12px;line-height:1.65;box-shadow:inset 0 0 20px rgba(255,230,109,.025)}
+.rules strong{color:var(--yellow);letter-spacing:1px}
 .rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
-.rule-item{padding:9px;border-left:2px solid #8d7c2b;background:#0b0b04}
-footer{text-align:center;color:#506454;font-size:11px;padding:28px 0 8px;line-height:1.7}
-@media(max-width:520px){.container{width:94%;padding:14px 0}.card{min-height:235px}header{padding:24px 13px}.logo{letter-spacing:0}.section-title{font-size:16px}}
+.rule-item{padding:10px;border-left:2px solid #8d7c2b;background:#0a0a03}
+footer{text-align:center;color:#506454;font-size:11px;padding:30px 0 10px;line-height:1.8}
+@media(max-width:520px){.container{width:94%;padding:15px 0}.card{min-height:245px}.logo{letter-spacing:0}.section-title{font-size:16px}.kicker{letter-spacing:2px}}
 </style>
 </head>
 <body>
 <div class="container">
 <header>
 <div class="kicker">★ EST. IN THE COMPUTER LAB ★</div>
-<div class="logo">💾 MR. LE CLAIRE'S DOS ARCADE 💾</div>
-<div class="subtitle">Computer games for fun, learning, problem-solving, and entertainment.</div>
-<div class="status"><span class="dot"></span> SYSTEM ONLINE &nbsp;|&nbsp; 8 GAME SLOTS &nbsp;|&nbsp; No Ads</div>
+<div class="logo">▣ MR. LE CLAIRE'S DOS ARCADE ▣</div>
+<div class="subtitle">A collection of classic computer games for fun, learning, problem-solving, and exploration.</div>
+<div class="status"><span class="dot"></span> SYSTEM ONLINE &nbsp;|&nbsp; 8 GAMES LOADED &nbsp;|&nbsp; NO ADS</div>
 </header>
 
 <section id="games">
-<div class="section-title"><span>▶</span> SELECT YOUR GAME <span style="margin-left:auto;font-size:11px;color:var(--dim)">[ USE YOUR MOUSE OR TRACKPAD ]</span></div>
+<div class="section-title"><span>▶</span> GAME SELECT <span style="margin-left:auto;font-size:10px;color:var(--dim)">[ CLICK TO LAUNCH ]</span></div>
 <div class="games">
-<article class="card"><div class="card-top"><span class="slot">GAME 01</span><span class="tag">ARCADE</span></div><div class="pixel-icon">👽</div><div class="title">COSMO'S COSMIC ADVENTURE</div><div class="desc">Help Cosmo rescue his parents in this classic Apogee platform adventure.</div><a class="play" href="cosmo-web-v2/">▶ PLAY COSMO</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 02</span><span class="tag">ACTION</span></div><div class="pixel-icon">🐑</div><div class="title">SUPER 3-D NOAH'S ARK</div><div class="desc">Step into a classic DOS-era 3-D adventure aboard Noah's Ark.</div><a class="play" href="game.html?game=noah">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 03</span><span class="tag">ARCADE</span></div><div class="pixel-icon">💎</div><div class="title">DIGGER</div><div class="desc">Dig, collect treasure, and avoid danger in this classic arcade-style DOS game.</div><a class="play" href="digger-test.html">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 04</span><span class="tag">ACTION</span></div><div class="pixel-icon">🥣</div><div class="title">CHEX QUEST</div><div class="desc">Defend Bazoik from the Flemoids in this classic cereal-box DOS game.</div><a class="play" href="game.html?game=chex">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 05</span><span class="tag">EDUCATIONAL</span></div><div class="pixel-icon">⌨️</div><div class="title">MARIO TEACHES TYPING</div><div class="desc">Practice keyboard skills and typing with Mario in this classic educational DOS game.</div><a class="play" href="mario.html">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 06</span><span class="tag">EDUCATIONAL</span></div><div class="pixel-icon">🐂</div><div class="title">THE OREGON TRAIL</div><div class="desc">Make your way west in the classic educational adventure of wagon travel, choices, and survival.</div><a class="play" href="oregon.html">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 07</span><span class="tag">PLATFORMER</span></div><div class="pixel-icon">🧑‍🚀</div><div class="title">COMMANDER KEEN: MAROONED ON MARS</div><div class="desc">Help Billy Blaze survive Mars in the first Commander Keen adventure.</div><a class="play" href="keen1.html">▶ PLAY GAME</a></article>
-<article class="card"><div class="card-top"><span class="slot">GAME 08</span><span class="tag">PLATFORMER</span></div><div class="pixel-icon">🚀</div><div class="title">COMMANDER KEEN: SECRET OF THE ORACLE</div><div class="desc">Explore the Shadowlands and uncover the mystery of the Oracle in this classic DOS platformer.</div><a class="play" href="keen4.html">▶ PLAY GAME</a></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 01 // ARCADE</span><span class="tag">ARCADE</span></div><div class="pixel-icon">👽</div><div class="title">COSMO'S COSMIC ADVENTURE</div><div class="desc">Help Cosmo rescue his parents in this classic Apogee platform adventure.</div><a class="play" href="cosmo-web-v2/">▶ LAUNCH GAME</a></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 02 // ACTION</span><span class="tag">ACTION</span></div><div class="pixel-icon">🐑</div><div class="title">SUPER 3-D NOAH'S ARK</div><div class="desc">Step into a classic DOS-era 3-D adventure aboard Noah's Ark.</div><a class="play" href="game.html?game=noah">▶ LAUNCH GAME</a></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 03 // ARCADE</span><span class="tag">ARCADE</span></div><div class="pixel-icon">💎</div><div class="title">DIGGER</div><div class="desc">Dig, collect treasure, and avoid danger in this classic arcade-style DOS game.</div><a class="play" href="digger-test.html">▶ LAUNCH GAME</a></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 04 // ACTION</span><span class="tag">ACTION</span></div><div class="pixel-icon">🥣</div><div class="title">CHEX QUEST</div><div class="desc">Defend Bazoik from the Flemoids in this classic cereal-box DOS game.</div><a class="play" href="game.html?game=chex">▶ LAUNCH GAME</a></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 05 // EDUCATIONAL</span><span class="tag">EDUCATIONAL</span></div><div class="pixel-icon">⌨️</div><div class="title">MARIO TEACHES TYPING</div><div class="desc">Practice keyboard skills and typing with Mario in this classic educational DOS game.</div><a class="play" href="mario.html">▶ LAUNCH GAME</a></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 06 // EDUCATIONAL</span><span class="tag">EDUCATIONAL</span></div><div class="pixel-icon">🐂</div><div class="title">THE OREGON TRAIL</div><div class="desc">Make your way west in the classic educational adventure of wagon travel, choices, and survival.</div><a class="play" href="oregon.html">▶ LAUNCH GAME</a></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 07 // PLATFORMER</span><span class="tag">PLATFORMER</span></div><div class="pixel-icon">🧑‍🚀</div><div class="title">COMMANDER KEEN: MAROONED ON MARS</div><div class="desc">Help Billy Blaze survive Mars in the first Commander Keen adventure.</div><a class="play" href="keen1.html">▶ LAUNCH GAME</a></article>
+<article class="card"><div class="card-top"><span class="slot">GAME 08 // PLATFORMER</span><span class="tag">PLATFORMER</span></div><div class="pixel-icon">🚀</div><div class="title">COMMANDER KEEN: SECRET OF THE ORACLE</div><div class="desc">Explore the Shadowlands and uncover the mystery of the Oracle in this classic DOS platformer.</div><a class="play" href="keen4.html">▶ LAUNCH GAME</a></article>
 </div>
 </section>
 
 <section>
-<div class="section-title"><span>▶</span> CLASSROOM RULES</div>
+<div class="section-title"><span>▶</span> CLASSROOM PROTOCOL</div>
 <div class="rules"><strong>⚠ CLASSROOM MODE ENABLED</strong><div class="rules-grid"><div class="rule-item">Play only games on this page.</div><div class="rule-item">Use the Chromebook appropriately and follow class directions.</div><div class="rule-item">If something unexpected appears, stop and tell Mr. Le Claire.</div><div class="rule-item">Keep food and drinks away from the computer.</div></div></div>
 </section>
-<footer>MR. LE CLAIRE'S TECHNOLOGY CLASS • HERITAGE CHRISTIAN SCHOOL<br>PRESS PLAY. EXPLORE. LEARN.</footer>
+<footer>MR. LE CLAIRE'S TECHNOLOGY CLASS • HERITAGE CHRISTIAN SCHOOL<br>PRESS PLAY. EXPLORE. LEARN. • SYSTEM READY</footer>
 </div>
 </body>
 </html>
