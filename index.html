@@ -10,40 +10,58 @@
 html{scroll-behavior:smooth}
 body{margin:0;background:#010301;color:var(--green);font-family:"Courier New",Courier,monospace;min-height:100vh;overflow-x:hidden}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(57,255,114,.025) 0,rgba(57,255,114,.025) 1px,transparent 1px,transparent 4px);z-index:20;mix-blend-mode:screen}
-body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.62) 100%);z-index:21}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.65) 100%);z-index:21}
 .container{width:min(1160px,93%);margin:auto;padding:28px 0;position:relative;z-index:2}
-header{position:relative;overflow:hidden;margin:0 0 30px;padding:34px 24px;text-align:center;border:2px solid var(--green);background:linear-gradient(145deg,#0b1d10,#020602 70%);box-shadow:0 0 0 5px #061009,0 0 35px rgba(57,255,114,.15),inset 0 0 35px rgba(57,255,114,.04)}
-header:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(71,246,255,.05) 50%,transparent 65%);transform:translateX(-100%);animation:scan 7s linear infinite}
-header:after{content:"";position:absolute;left:5%;right:5%;bottom:0;height:4px;background:linear-gradient(90deg,transparent,var(--green),var(--cyan),var(--green),transparent);box-shadow:0 0 12px var(--green)}
+header{position:relative;overflow:hidden;margin:0 0 30px;padding:34px 24px;text-align:center;border:2px solid var(--green);background:linear-gradient(145deg,#0b1d10,#020602 70%);box-shadow:0 0 0 5px #061009,0 0 35px rgba(57,255,114,.15),inset 0 0 35px rgba(57,255,114,.04);animation:terminalPulse 5s ease-in-out infinite}
+header:before{content:"";position:absolute;inset:-30%;background:linear-gradient(115deg,transparent 42%,rgba(71,246,255,.09) 50%,transparent 58%);transform:translateX(-100%);animation:scan 5s linear infinite}
+header:after{content:"";position:absolute;left:5%;right:5%;bottom:0;height:4px;background:linear-gradient(90deg,transparent,var(--green),var(--cyan),var(--green),transparent);box-shadow:0 0 12px var(--green);animation:bar 2.8s ease-in-out infinite}
 @keyframes scan{to{transform:translateX(100%)}}
-.kicker{font-size:11px;letter-spacing:4px;color:var(--blue);margin-bottom:14px}
-.logo{font-size:clamp(26px,5vw,50px);font-weight:bold;letter-spacing:2px;color:var(--white);text-shadow:0 0 8px rgba(57,255,114,.45),3px 3px 0 #123d1d}
+@keyframes bar{0%,100%{opacity:.55;transform:scaleX(.7)}50%{opacity:1;transform:scaleX(1)}}
+@keyframes terminalPulse{50%{box-shadow:0 0 0 5px #061009,0 0 45px rgba(57,255,114,.2),inset 0 0 40px rgba(57,255,114,.06)}}
+.kicker{font-size:11px;letter-spacing:4px;color:var(--blue);margin-bottom:14px;animation:flicker 7s infinite}
+@keyframes flicker{0%,94%,96%,100%{opacity:1}95%{opacity:.35}}
+.logo{font-size:clamp(26px,5vw,50px);font-weight:bold;letter-spacing:2px;color:var(--white);text-shadow:0 0 8px rgba(57,255,114,.45),3px 3px 0 #123d1d;animation:logoGlow 3s ease-in-out infinite}
+@keyframes logoGlow{50%{text-shadow:0 0 16px rgba(57,255,114,.65),3px 3px 0 #123d1d}}
 .subtitle{max-width:720px;margin:14px auto 0;color:var(--yellow);font-size:14px;line-height:1.5}
-.status{display:inline-flex;gap:10px;align-items:center;margin-top:20px;padding:8px 14px;border:1px solid #285b34;background:#020602;color:var(--dim);font-size:11px;box-shadow:inset 0 0 12px rgba(57,255,114,.05)}
-.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:blink 1.7s infinite}
-@keyframes blink{50%{opacity:.35}}
+.status{display:inline-flex;gap:10px;align-items:center;margin-top:20px;padding:8px 14px;border:1px solid #285b34;background:#020602;color:var(--dim);font-size:11px;box-shadow:inset 0 0 12px rgba(57,255,114,.05);animation:statusShift 4s ease-in-out infinite}
+@keyframes statusShift{50%{border-color:#39985a;box-shadow:0 0 12px rgba(57,255,114,.12)}}
+.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2;transform:scale(.75)}}
 .section-title{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--green);padding-bottom:10px;margin:28px 0 15px;font-size:19px;color:var(--white);text-shadow:0 0 7px rgba(57,255,114,.2)}
-.section-title span{color:var(--green)}
+.section-title span{color:var(--green);animation:arrowPulse 1.4s ease-in-out infinite}
+@keyframes arrowPulse{50%{transform:translateX(4px);text-shadow:0 0 10px var(--green)}}
 .games{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:17px}
-.card{position:relative;overflow:hidden;padding:18px;background:linear-gradient(145deg,#0a160c,#020502 80%);border:1px solid #1f6534;display:flex;flex-direction:column;min-height:270px;transition:transform .18s,border-color .18s,box-shadow .18s}
-.card:before{content:"";position:absolute;top:0;left:0;width:52px;height:3px;background:var(--blue);box-shadow:0 0 9px var(--blue)}
-.card:after{content:"";position:absolute;right:-30px;bottom:-35px;width:90px;height:90px;border:1px solid rgba(57,255,114,.08);transform:rotate(45deg)}
-.card:hover{transform:translateY(-6px) scale(1.01);border-color:var(--green);box-shadow:0 10px 28px rgba(0,0,0,.55),0 0 22px rgba(57,255,114,.12)}
-.card:hover .pixel-icon{transform:scale(1.08);text-shadow:0 0 15px rgba(57,255,114,.4)}
+.card{position:relative;overflow:hidden;padding:18px;background:linear-gradient(145deg,#0a160c,#020502 80%);border:1px solid #1f6534;display:flex;flex-direction:column;min-height:270px;transition:transform .18s,border-color .18s,box-shadow .18s;animation:cardFloat 6s ease-in-out infinite}
+.card:nth-child(2n){animation-delay:-2s}.card:nth-child(3n){animation-delay:-4s}
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.card:before{content:"";position:absolute;top:0;left:0;width:52px;height:3px;background:var(--blue);box-shadow:0 0 9px var(--blue);animation:loader 3s ease-in-out infinite}
+@keyframes loader{0%,100%{width:35px}50%{width:90px}}
+.card:after{content:"";position:absolute;right:-30px;bottom:-35px;width:90px;height:90px;border:1px solid rgba(57,255,114,.08);transform:rotate(45deg);transition:.3s}
+.card:hover{transform:translateY(-8px) scale(1.015)!important;border-color:var(--green);box-shadow:0 10px 28px rgba(0,0,0,.55),0 0 25px rgba(57,255,114,.16)}
+.card:hover:after{transform:rotate(135deg) scale(1.2);border-color:rgba(57,255,114,.2)}
+.card:hover .pixel-icon{transform:scale(1.12) rotate(-2deg);text-shadow:0 0 15px rgba(57,255,114,.4)}
 .card-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
 .slot{font-size:10px;color:#547d60;letter-spacing:1px}
-.tag{font-size:9px;background:#102c17;color:var(--green);padding:4px 7px;border:1px solid #285b34;letter-spacing:1px}
+.tag{font-size:9px;background:#102c17;color:var(--green);padding:4px 7px;border:1px solid #285b34;letter-spacing:1px;animation:tagPulse 3s ease-in-out infinite}
+@keyframes tagPulse{50%{box-shadow:0 0 8px rgba(57,255,114,.12)}}
 .pixel-icon{font-size:48px;line-height:1;margin:22px 0 14px;transition:transform .18s}
 .title{font-size:17px;color:var(--white);font-weight:bold;line-height:1.25;text-shadow:0 0 5px rgba(255,255,255,.08)}
 .desc{font-size:12px;color:#9db0a2;line-height:1.5;margin:9px 0 17px;flex:1}
-.play{display:block;width:100%;padding:11px;border:2px solid var(--green);background:#061609;color:var(--green);font:inherit;font-weight:bold;text-decoration:none;text-align:center;cursor:pointer;letter-spacing:1px;transition:.15s}
+.play{display:block;width:100%;padding:11px;border:2px solid var(--green);background:#061609;color:var(--green);font:inherit;font-weight:bold;text-decoration:none;text-align:center;cursor:pointer;letter-spacing:1px;transition:.15s;position:relative;overflow:hidden}
+.play:before{content:"";position:absolute;top:0;bottom:0;width:25%;left:-30%;background:rgba(57,255,114,.25);transform:skewX(-20deg);animation:buttonScan 4s linear infinite}
+@keyframes buttonScan{to{left:130%}}
 .play:hover{background:var(--green);color:#001b07;box-shadow:0 0 18px rgba(57,255,114,.35)}
-.rules{border:1px solid #8d7c2b;padding:17px;background:linear-gradient(135deg,#171504,#090903);color:#eeecc7;font-size:12px;line-height:1.65;box-shadow:inset 0 0 20px rgba(255,230,109,.025)}
+.rules{border:1px solid #8d7c2b;padding:17px;background:linear-gradient(135deg,#171504,#090903);color:#eeecc7;font-size:12px;line-height:1.65;box-shadow:inset 0 0 20px rgba(255,230,109,.025);animation:ruleGlow 5s ease-in-out infinite}
+@keyframes ruleGlow{50%{border-color:#b29d36;box-shadow:0 0 18px rgba(255,230,109,.05),inset 0 0 20px rgba(255,230,109,.04)}}
 .rules strong{color:var(--yellow);letter-spacing:1px}
 .rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
-.rule-item{padding:10px;border-left:2px solid #8d7c2b;background:#0a0a03}
-footer{text-align:center;color:#506454;font-size:11px;padding:30px 0 10px;line-height:1.8}
+.rule-item{padding:10px;border-left:2px solid #8d7c2b;background:#0a0a03;transition:.2s}
+.rule-item:hover{transform:translateX(5px);border-left-color:var(--yellow)}
+footer{text-align:center;color:#506454;font-size:11px;padding:30px 0 10px;line-height:1.8;animation:footerBlink 6s ease-in-out infinite}
+@keyframes footerBlink{50%{color:#6b876f}}
+@media(max-width:700px){.card{animation:none}}
 @media(max-width:520px){.container{width:94%;padding:15px 0}.card{min-height:245px}.logo{letter-spacing:0}.section-title{font-size:16px}.kicker{letter-spacing:2px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -54,7 +72,6 @@ footer{text-align:center;color:#506454;font-size:11px;padding:30px 0 10px;line-h
 <div class="subtitle">A collection of classic computer games for fun, learning, problem-solving, and exploration.</div>
 <div class="status"><span class="dot"></span> SYSTEM ONLINE &nbsp;|&nbsp; 8 GAMES LOADED &nbsp;|&nbsp; NO ADS</div>
 </header>
-
 <section id="games">
 <div class="section-title"><span>▶</span> GAME SELECT <span style="margin-left:auto;font-size:10px;color:var(--dim)">[ CLICK TO LAUNCH ]</span></div>
 <div class="games">
@@ -68,7 +85,6 @@ footer{text-align:center;color:#506454;font-size:11px;padding:30px 0 10px;line-h
 <article class="card"><div class="card-top"><span class="slot">GAME 08 // PLATFORMER</span><span class="tag">PLATFORMER</span></div><div class="pixel-icon">🚀</div><div class="title">COMMANDER KEEN: SECRET OF THE ORACLE</div><div class="desc">Explore the Shadowlands and uncover the mystery of the Oracle in this classic DOS platformer.</div><a class="play" href="keen4.html">▶ LAUNCH GAME</a></article>
 </div>
 </section>
-
 <section>
 <div class="section-title"><span>▶</span> CLASSROOM PROTOCOL</div>
 <div class="rules"><strong>⚠ CLASSROOM MODE ENABLED</strong><div class="rules-grid"><div class="rule-item">Play only games on this page.</div><div class="rule-item">Use the Chromebook appropriately and follow class directions.</div><div class="rule-item">If something unexpected appears, stop and tell Mr. Le Claire.</div><div class="rule-item">Keep food and drinks away from the computer.</div></div></div>
