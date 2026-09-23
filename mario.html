@@ -23,14 +23,13 @@ const player=document.getElementById("player");
 try{
   if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
   Dos(player,{
-    url:"games/mario-letters.jsdos",
+    url:"games/mario-letters.jsdos?v=20260923-2",
     backend:"dosboxX",
     backendLocked:true,
     workerThread:false,
     offscreenCanvas:false,
     renderBackend:"canvas",
     autoStart:true,
-    fsChanges:{local:true}
   });
 }catch(e){
   player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(e.message||e)+'</div>';
