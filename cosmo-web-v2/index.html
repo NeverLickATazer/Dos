@@ -25,17 +25,76 @@ document.addEventListener('keyup', function(e) {
 </head>
 <body>
 <div class="wrap">
-<canvas id="canvas" width="960" height="600"></canvas>
+<div id="profile" style="background:#0a0f0b;border:1px solid #39ff72;padding:10px 14px;color:#39ff72;font-family:monospace;max-width:720px;width:88vw;box-sizing:border-box">
+<label>PLAYER CODE: <input id="playerCode" maxlength="20" placeholder="e.g. STUDENT07" style="background:#000;color:#39ff72;border:1px solid #39ff72;padding:5px;font-family:monospace;text-transform:uppercase"></label>
+<button id="startBtn" style="margin-left:8px;background:#39ff72;color:#001b07;border:0;padding:6px 10px;font-family:monospace;font-weight:bold;cursor:pointer">START COSMO</button>
+<div style="font-size:10px;color:#8fb99a;margin-top:6px">Use the same code each time you return to this computer. Cosmo's saved games are kept separate from other players.</div>
+</div>
+<canvas id="canvas" width="960" height="600" style="display:none">
 <a class="button" href="../index.html">← Back to DOS Arcade</a>
 </div>
 <script>
-var statusEl=document.createElement('div');
-var Module={
-  canvas:document.getElementById('canvas'),
-  print:function(t){},
-  printErr:function(t){console.error(t);}
-};
+var playerCode="";
+var saveTimer=null;
+
+function bytesToBase64(bytes){
+  let binary="";
+  const chunk=0x8000;
+  for(let i=0;i<bytes.length;i+=chunk) binary+=String.fromCharCode.apply(null,bytes.subarray(i,i+chunk));
+  return btoa(binary);
+}
+function base64ToBytes(text){
+  const binary=atob(text), out=new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i++) out[i]=binary.charCodeAt(i);
+  return out;
+}
+function saveCosmoFiles(){
+  try{
+    const fs=Module.FS;
+    if(!fs || !playerCode) return;
+    const files=fs.readdir("/").filter(n=>/^COSMO.*\\.(SV[1-9]|CFG)$/i.test(n));
+    const data={};
+    files.forEach(name=>data[name]=bytesToBase64(fs.readFile("/"+name,{encoding:"binary"})));
+    localStorage.setItem("dos-arcade-cosmo-"+playerCode,JSON.stringify(data));
+  }catch(e){console.warn("Cosmo save backup failed",e);}
+}
+function restoreCosmoFiles(){
+  try{
+    const fs=Module.FS;
+    if(!fs || !playerCode) return;
+    fs.readdir("/").filter(n=>/^COSMO.*\\.(SV[1-9]|CFG)$/i.test(n)).forEach(n=>{try{fs.unlink("/"+n)}catch(e){}});
+    const raw=localStorage.getItem("dos-arcade-cosmo-"+playerCode);
+    if(!raw) return;
+    const data=JSON.parse(raw);
+    Object.keys(data).forEach(name=>fs.writeFile("/"+name,base64ToBytes(data[name])));
+  }catch(e){console.warn("Cosmo save restore failed",e);}
+}
+
+document.getElementById("startBtn").addEventListener("click",function(){
+  playerCode=(document.getElementById("playerCode").value||"").trim().toUpperCase().replace(/[^A-Z0-9_-]/g,"");
+  if(!playerCode){alert("Enter your player code first.");return;}
+  document.getElementById("profile").style.display="none";
+  document.getElementById("canvas").style.display="block";
+
+  var statusEl=document.createElement("div");
+  var Module={
+    canvas:document.getElementById("canvas"),
+    print:function(t){},
+    printErr:function(t){console.error(t);},
+    onRuntimeInitialized:function(){
+      restoreCosmoFiles();
+      saveTimer=setInterval(saveCosmoFiles,2000);
+    }
+  };
+  window.Module=Module;
+
+  var script=document.createElement("script");
+  script.src="cosmo1.js";
+  document.body.appendChild(script);
+});
+
+window.addEventListener("pagehide",saveCosmoFiles);
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")saveCosmoFiles();});
 </script>
-<script src="cosmo1.js"></script>
 </body>
 </html>
