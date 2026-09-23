@@ -16,15 +16,24 @@ html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-
 </head>
 <body>
 <div class="wrap">
+<div id="profile" style="background:#0a0f0b;border:1px solid #39ff72;padding:10px 14px;color:#39ff72;font-family:monospace;max-width:960px;width:96vw;box-sizing:border-box">
+<label>PLAYER CODE: <input id="playerCode" maxlength="20" placeholder="e.g. STUDENT07" style="background:#000;color:#39ff72;border:1px solid #39ff72;padding:5px;font-family:monospace;text-transform:uppercase"></label>
+<button id="startBtn" style="margin-left:8px;background:#39ff72;color:#001b07;border:0;padding:6px 10px;font-family:monospace;font-weight:bold;cursor:pointer">START</button>
+<div style="font-size:10px;color:#8fb99a;margin-top:6px">Use the same code each time you return to this computer. Your game saves are kept separate from other players.</div>
+</div>
 <div id="player" class="player"></div>
 <div class="help">Controls: Arrow Keys = Move &nbsp;|&nbsp; Ctrl = Jump &nbsp;|&nbsp; Alt = Pogo &nbsp;|&nbsp; Space = Fire &nbsp;|&nbsp; Enter = Enter/Select &nbsp;|&nbsp; M = Menu</div>
 <a class="button" href="index.html">← Back to DOS Arcade</a>
 </div>
 <script>
 const player=document.getElementById("player");
+function startGame(){
+ const code=(document.getElementById("playerCode").value||"").trim().toUpperCase().replace(/[^A-Z0-9_-]/g,"");
+ if(!code){alert("Enter your player code first.");return;}
+ document.getElementById("profile").style.display="none";
 try{
  if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
- Dos(player,{url:"https://raw.githubusercontent.com/bladeclickers/bladeclickers.github.io/main/commander-keen-1-episode-1/keen1.jsdos",autoStart:true,workerThread:false,offscreenCanvas:false,renderBackend:"canvas"});
+ Dos(player,{url:"https://raw.githubusercontent.com/bladeclickers/bladeclickers.github.io/main/commander-keen-1-episode-1/keen1.jsdos",autoStart:true,workerThread:false,offscreenCanvas:false,renderBackend:"canvas",fsChanges:{local:true,urlToKey:async function(){return "keen1-"+code;}}});
 
  // Space fires by sending Keen's original Ctrl+Alt fire combination.
  // Enter is left completely alone so it reaches the game as a real Enter key.
@@ -80,6 +89,7 @@ try{
  player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(e.message||e)+'</div>';
  console.error(e);
 }
+document.getElementById("startBtn").addEventListener("click",startGame);
 </script>
 </body>
 </html>
