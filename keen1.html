@@ -17,7 +17,7 @@ html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-
 <body>
 <div class="wrap">
 <div id="player" class="player"></div>
-<div class="help">Controls: Arrow Keys = Move &nbsp;|&nbsp; Ctrl = Jump &nbsp;|&nbsp; Alt = Pogo &nbsp;|&nbsp; Space = Fire</div>
+<div class="help">Controls: Arrow Keys = Move &nbsp;|&nbsp; Ctrl = Jump &nbsp;|&nbsp; Alt = Pogo &nbsp;|&nbsp; Space = Fire &nbsp;|&nbsp; Enter = Menu</div>
 <a class="button" href="index.html">← Back to DOS Arcade</a>
 </div>
 <script>
@@ -26,24 +26,52 @@ try{
  if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
  Dos(player,{url:"https://raw.githubusercontent.com/bladeclickers/bladeclickers.github.io/main/commander-keen-1-episode-1/keen1.jsdos",autoStart:true,workerThread:false,offscreenCanvas:false,renderBackend:"canvas"});
 
- // Commander Keen 1 normally fires with Ctrl+Alt.
- // Make Space act as Ctrl+Alt so students can fire with one easy key.
+ // Keen normally uses Ctrl+Alt to fire. Space is remapped to that combination.
+ // Enter is remapped to the DOS Space key so it performs Keen's menu action.
  let spaceFire=false;
+ let enterDown=false;
+
+ function sendKey(type,key,code,keyCode,mods){
+   document.dispatchEvent(new KeyboardEvent(type,{
+     key:key,code:code,keyCode:keyCode,which:keyCode,bubbles:true,
+     ctrlKey:!!(mods&&mods.ctrlKey),altKey:!!(mods&&mods.altKey)
+   }));
+ }
+
  document.addEventListener("keydown",function(e){
-   if(e.code==="Space" && !spaceFire){
+   if(e.code==="Space"){
      e.preventDefault();
-     spaceFire=true;
-     document.dispatchEvent(new KeyboardEvent("keydown",{key:"Control",code:"ControlLeft",keyCode:17,which:17,ctrlKey:true,bubbles:true}));
-     document.dispatchEvent(new KeyboardEvent("keydown",{key:"Alt",code:"AltLeft",keyCode:18,which:18,altKey:true,ctrlKey:true,bubbles:true}));
+     e.stopPropagation();
+     if(!spaceFire){
+       spaceFire=true;
+       sendKey("keydown","Control","ControlLeft",17,{ctrlKey:true});
+       sendKey("keydown","Alt","AltLeft",18,{ctrlKey:true,altKey:true});
+     }
+   } else if(e.code==="Enter"){
+     e.preventDefault();
+     e.stopPropagation();
+     if(!enterDown){
+       enterDown=true;
+       sendKey("keydown"," ","Space",32,{});
+     }
    }
  },true);
+
  document.addEventListener("keyup",function(e){
    if(e.code==="Space"){
      e.preventDefault();
+     e.stopPropagation();
      if(spaceFire){
        spaceFire=false;
-       document.dispatchEvent(new KeyboardEvent("keyup",{key:"Alt",code:"AltLeft",keyCode:18,which:18,bubbles:true}));
-       document.dispatchEvent(new KeyboardEvent("keyup",{key:"Control",code:"ControlLeft",keyCode:17,which:17,bubbles:true}));
+       sendKey("keyup","Alt","AltLeft",18,{});
+       sendKey("keyup","Control","ControlLeft",17,{});
+     }
+   } else if(e.code==="Enter"){
+     e.preventDefault();
+     e.stopPropagation();
+     if(enterDown){
+       enterDown=false;
+       sendKey("keyup"," ","Space",32,{});
      }
    }
  },true);
