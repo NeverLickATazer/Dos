@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mr. Le Claire's DOS Arcade - Commander Keen 1</title>
+<title>Mr. Le Claire's DOS Arcade - Commander Keen: Marooned on Mars</title>
 <link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
 <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
 <style>
@@ -11,11 +11,13 @@ html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-
 .wrap{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;box-sizing:border-box;gap:6px}
 .player{width:min(960px,96vw);height:min(88vh,720px);background:#000;border:2px solid #444}
 .button{display:inline-block;padding:9px 14px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
+.help{font-size:12px;color:#ccc}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div id="player" class="player"></div>
+<div class="help">Controls: Arrow Keys = Move &nbsp;|&nbsp; Ctrl = Jump &nbsp;|&nbsp; Alt = Pogo &nbsp;|&nbsp; Space = Fire</div>
 <a class="button" href="index.html">← Back to DOS Arcade</a>
 </div>
 <script>
@@ -23,6 +25,28 @@ const player=document.getElementById("player");
 try{
  if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
  Dos(player,{url:"https://raw.githubusercontent.com/bladeclickers/bladeclickers.github.io/main/commander-keen-1-episode-1/keen1.jsdos",autoStart:true,workerThread:false,offscreenCanvas:false,renderBackend:"canvas"});
+
+ // Commander Keen 1 normally fires with Ctrl+Alt.
+ // Make Space act as Ctrl+Alt so students can fire with one easy key.
+ let spaceFire=false;
+ document.addEventListener("keydown",function(e){
+   if(e.code==="Space" && !spaceFire){
+     e.preventDefault();
+     spaceFire=true;
+     document.dispatchEvent(new KeyboardEvent("keydown",{key:"Control",code:"ControlLeft",keyCode:17,which:17,ctrlKey:true,bubbles:true}));
+     document.dispatchEvent(new KeyboardEvent("keydown",{key:"Alt",code:"AltLeft",keyCode:18,which:18,altKey:true,ctrlKey:true,bubbles:true}));
+   }
+ },true);
+ document.addEventListener("keyup",function(e){
+   if(e.code==="Space"){
+     e.preventDefault();
+     if(spaceFire){
+       spaceFire=false;
+       document.dispatchEvent(new KeyboardEvent("keyup",{key:"Alt",code:"AltLeft",keyCode:18,which:18,bubbles:true}));
+       document.dispatchEvent(new KeyboardEvent("keyup",{key:"Control",code:"ControlLeft",keyCode:17,which:17,bubbles:true}));
+     }
+   }
+ },true);
 }catch(e){
  player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(e.message||e)+'</div>';
  console.error(e);
