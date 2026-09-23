@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. Le Claire's DOS Arcade - Commander Keen 4</title>
+<link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
+<script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+<style>
+html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-align:center;overflow:hidden}
+.wrap{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;box-sizing:border-box;gap:6px}
+.player{width:min(960px,96vw);height:min(88vh,720px);background:#000;border:2px solid #444}
+.button{display:inline-block;padding:9px 14px;background:#1677b8;color:#fff;text-decoration:none;border-radius:7px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="player" class="player"></div>
+<a class="button" href="index.html">← Back to DOS Arcade</a>
+</div>
+<script>
+const player=document.getElementById("player");
+try{
+ if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
+ Dos(player,{url:"https://raw.githubusercontent.com/bladeclickers/bladeclickers.github.io/main/commander-keen-4-episode-1/keen4.jsdos",autoStart:true,workerThread:false,offscreenCanvas:false,renderBackend:"canvas"});
+}catch(e){
+ player.innerHTML='<div style="padding:30px;color:#fff;font-family:monospace">ERROR: '+(e.message||e)+'</div>';
+ console.error(e);
+}
+</script>
+</body>
+</html>
