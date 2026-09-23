@@ -16,6 +16,11 @@ html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-
 </head>
 <body>
 <div class="wrap">
+<div id="profile" style="background:#0a0f0b;border:1px solid #39ff72;padding:10px 14px;color:#39ff72;font-family:monospace;max-width:960px;width:96vw;box-sizing:border-box">
+<label>PLAYER CODE: <input id="playerCode" maxlength="20" placeholder="e.g. STUDENT07" style="background:#000;color:#39ff72;border:1px solid #39ff72;padding:5px;font-family:monospace;text-transform:uppercase"></label>
+<button id="startBtn" style="margin-left:8px;background:#39ff72;color:#001b07;border:0;padding:6px 10px;font-family:monospace;font-weight:bold;cursor:pointer">START</button>
+<div style="font-size:10px;color:#8fb99a;margin-top:6px">Use the same code each time you return to this computer. Your game saves are kept separate from other players.</div>
+</div>
 <div id="player" class="player"></div>
 <a class="button" href="index.html">← Back to DOS Arcade</a>
 </div>
@@ -32,6 +37,10 @@ const selected=games[game];
 const player=document.getElementById('player');
 
 async function startGame(){
+ const code=(document.getElementById('playerCode').value||'').trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'');
+ if(!code){ alert('Enter your player code first.'); return; }
+ document.getElementById('profile').style.display='none';
+
  if(!selected){
   player.innerHTML='<div style="padding:30px;color:#fff">Game not found.</div>';
   return;
@@ -161,7 +170,7 @@ MARIO.EXE
    offscreenCanvas:false,
    renderBackend:'canvas',
    autoStart:true,
-   fsChanges:{local:true}
+   fsChanges:{local:true,urlToKey:async function(){return 'dos-arcade-'+game+'-'+code;}}
   });
   window.currentDosInstance=instance;
  }catch(error){
@@ -169,7 +178,7 @@ MARIO.EXE
   console.error(error);
  }
 }
-startGame();
+document.getElementById('startBtn').addEventListener('click',startGame);
 </script>
 </body>
 </html>
