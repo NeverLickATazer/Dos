@@ -24,7 +24,17 @@ html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-
 const player=document.getElementById("player");
 try{
  if(typeof window.Dos!=="function") throw new Error("js-dos did not load.");
- Dos(player,{url:"https://raw.githubusercontent.com/bladeclickers/bladeclickers.github.io/main/commander-keen-1-episode-1/keen1.jsdos",autoStart:true,workerThread:true,offscreenCanvas:true,renderBackend:"webgl"});
+
+ // Run DOSBox in a Worker so the browser UI does not get blocked.
+ // Keep rendering on the normal canvas for better Chromebook compatibility.
+ Dos(player,{
+   url:"https://raw.githubusercontent.com/bladeclickers/bladeclickers.github.io/main/commander-keen-1-episode-1/keen1.jsdos",
+   autoStart:true,
+   workerThread:true,
+   offscreenCanvas:false,
+   renderBackend:"webgl",
+   imageRendering:"pixelated"
+ });
 
  // Space fires by sending Keen's original Ctrl+Alt fire combination.
  // Enter is left completely alone so it reaches the game as a real Enter key.
