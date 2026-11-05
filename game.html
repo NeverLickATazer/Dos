@@ -4,8 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mr. Le Claire's DOScade Arcade</title>
-<link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
-<script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+<link rel="stylesheet" href="js-dos/js-dos.css">
+<script src="js-dos/js-dos.js"></script>
+<script>
+// Keep js-dos worker/WASM requests on this repository, not the js-dos CDN.
+if (window.emulators) {
+  window.emulators.pathPrefix = new URL("js-dos/emulators/", document.baseURI).href;
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
 html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-align:center;overflow:hidden}
@@ -37,14 +43,13 @@ async function startGame(){
   return;
  }
  try{
-  if(typeof window.Dos!=='function')throw new Error('js-dos did not load.');
+  if(typeof window.Dos!=='function') throw new Error('The local js-dos library did not load. Check that js-dos/js-dos.js exists.');
   if(game==='cosmo') return;
 
   const response=await fetch(selected.url);
-  if(!response.ok)throw new Error('Could not load the game file.');
+  if(!response.ok) throw new Error('Could not load the game file.');
   const zip=await JSZip.loadAsync(await response.arrayBuffer());
   const initFs=[];
-
   for(const name of Object.keys(zip.files)){
    const entry=zip.files[name];
    if(entry.dir || name.startsWith('.jsdos/')) continue;
