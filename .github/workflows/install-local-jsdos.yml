@@ -20,7 +20,7 @@ jobs:
           node-version: 22
 
       - name: Install js-dos and JSZip
-        run: npm install --no-save --no-package-lock js-dos@8.5.3 jszip@3.10.1
+        run: npm install --no-save --no-package-lock js-dos@8.5.3 emulators@8.5.2 jszip@3.10.1
 
       - name: Copy emulator files
         shell: bash
