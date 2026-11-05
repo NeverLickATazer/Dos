@@ -1,0 +1,51 @@
+
+name: Install local js-dos runtime
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out DOScade
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install js-dos and JSZip
+        run: npm install --no-save --no-package-lock js-dos@8.5.3 jszip@3.10.1
+
+      - name: Copy emulator files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f node_modules/js-dos/dist/js-dos.js
+          test -f node_modules/js-dos/dist/js-dos.css
+          test -d node_modules/emulators/dist
+          mkdir -p js-dos/emulators
+          cp -a node_modules/js-dos/dist/. js-dos/
+          cp -a node_modules/emulators/dist/. js-dos/emulators/
+          cp node_modules/jszip/dist/jszip.min.js js-dos/jszip.min.js
+
+      - name: Download Digger bundle
+        run: |
+          curl --fail --location --retry 3 \
+            https://v8.js-dos.com/bundles/digger.jsdos \
+            --output games/digger.jsdos
+
+      - name: Commit emulator files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js-dos games/digger.jsdos
+          if ! git diff --cached --quiet; then
+            git commit -m "Add locally hosted js-dos runtime"
+            git push
+          fi
