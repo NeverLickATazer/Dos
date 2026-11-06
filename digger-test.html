@@ -29,6 +29,7 @@ html,body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;text-
 try{
  if(typeof window.Dos!=='function') throw new Error('The local js-dos library did not load. Check that js-dos/js-dos.js exists.');
  Dos(document.getElementById('player'),{
+  pathPrefix: new URL('js-dos/emulators/', document.baseURI).href,
   url:'games/digger.jsdos',
   autoStart:true
  });
