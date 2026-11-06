@@ -7,10 +7,7 @@
 <link rel="stylesheet" href="js-dos/js-dos.css">
 <script src="js-dos/js-dos.js"></script>
 <script>
-// Keep js-dos worker/WASM requests on this repository, not the js-dos CDN.
-if (window.emulators) {
-  window.emulators.pathPrefix = new URL("js-dos/emulators/", document.baseURI).href;
-}
+
 </script>
 <script src="js-dos/jszip.min.js"></script>
 <style>
@@ -157,7 +154,8 @@ MARIO.EXE
    throw new Error('Unsupported game.');
   }
 
-  const instance=Dos(player,{
+const instance=Dos(player,{
+   pathPrefix: new URL("js-dos/emulators/", document.baseURI).href,
    dosboxConf:config,
    initFs:initFs,
    backend:game==='chex'?'dosboxX':'dosbox',
